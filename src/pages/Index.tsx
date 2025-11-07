@@ -105,7 +105,7 @@ const Index = () => {
       {/* Footer */}
       <footer className="border-t border-border py-8 bg-secondary/20">
         <div className="container mx-auto px-4 text-center text-muted-foreground">
-          <p className="mb-2">© 2025 Ukraine Prosthetic Aid. Supporting Ukraine's heroes.</p>
+          <p className="mb-2">© 2025 Ukraine aid in prosthetics. Supporting Ukraine's heroes.</p>
           <p className="text-sm">In partnership with Ukraine Prosthetic Assistance Project (UPAP)</p>
         </div>
       </footer>
