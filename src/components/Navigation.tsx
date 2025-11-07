@@ -15,7 +15,7 @@ const Navigation = () => {
             <div className="bg-primary rounded-full p-2 group-hover:scale-110 transition-transform">
               <Heart className="h-5 w-5 text-primary-foreground" />
             </div>
-            <span className="text-xl font-bold text-foreground">Ukraine aid in prosthetics</span>
+            <span className="text-xl font-bold text-foreground">Ukraine Prosthetic Aid</span>
           </Link>
           
           <div className="flex items-center gap-2">
