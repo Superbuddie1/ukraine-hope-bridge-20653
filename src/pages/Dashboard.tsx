@@ -35,7 +35,8 @@ const Dashboard = () => {
 
       try {
         // Fetch profile
-        const { data: profileData } = await supabase
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const { data: profileData } = await (supabase as any)
           .from("profiles")
           .select("full_name, email, language_preference")
           .eq("user_id", user.id)
@@ -46,7 +47,8 @@ const Dashboard = () => {
         }
 
         // Fetch latest survey
-        const { data: surveyData } = await supabase
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const { data: surveyData } = await (supabase as any)
           .from("user_surveys")
           .select("*")
           .eq("user_id", user.id)
