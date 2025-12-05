@@ -1,9 +1,21 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import Navigation from "@/components/Navigation";
+import { useAuth } from "@/hooks/useAuth";
 import { Heart, ArrowRight, Shield, Users, HeartHandshake } from "lucide-react";
 
 const Index = () => {
+  const { user } = useAuth();
+  const navigate = useNavigate();
+
+  const handleGetStarted = () => {
+    if (user) {
+      navigate("/assessment");
+    } else {
+      navigate("/auth");
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
@@ -29,12 +41,10 @@ const Index = () => {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
-              <Link to="/assessment">
-                <Button variant="hero" size="lg" className="group">
-                  Get Started
-                  <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                </Button>
-              </Link>
+              <Button variant="hero" size="lg" className="group" onClick={handleGetStarted}>
+                Get Started
+                <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
+              </Button>
               <Link to="/about">
                 <Button variant="outline" size="lg">
                   Learn More
@@ -92,12 +102,10 @@ const Index = () => {
             <p className="text-lg mb-8 opacity-95">
               Our personalized assessment will help identify the resources and support services that best match your needs.
             </p>
-            <Link to="/assessment">
-              <Button variant="accent" size="lg" className="group">
-                Start Your Assessment
-                <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
-              </Button>
-            </Link>
+            <Button variant="accent" size="lg" className="group" onClick={handleGetStarted}>
+              Start Your Assessment
+              <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
+            </Button>
           </div>
         </div>
       </section>

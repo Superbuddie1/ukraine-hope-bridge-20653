@@ -9,6 +9,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { Progress } from "@/components/ui/progress";
 import { ArrowRight, ArrowLeft, CheckCircle2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/hooks/useAuth";
+import { supabase } from "@/integrations/supabase/client";
+import { generatePersonalizedRoadmap } from "@/lib/assessmentLogic";
 
 interface AssessmentData {
   injuryTime: string;
@@ -21,7 +24,9 @@ interface AssessmentData {
 const Assessment = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { user } = useAuth();
   const [step, setStep] = useState(1);
+  const [saving, setSaving] = useState(false);
   const [data, setData] = useState<AssessmentData>({
     injuryTime: "",
     injurySeverity: "",
@@ -47,18 +52,69 @@ const Assessment = () => {
     }
   };
 
-  const handleSubmit = () => {
-    toast({
-      title: "Assessment Complete",
-      description: "Preparing your personalized resources...",
-    });
+  const handleSubmit = async () => {
+    if (!user) {
+      toast({
+        title: "Not authenticated",
+        description: "Please log in to save your assessment.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setSaving(true);
     
-    // Store assessment data in sessionStorage
-    sessionStorage.setItem("assessmentData", JSON.stringify(data));
-    
-    setTimeout(() => {
+    try {
+      // Save survey to database
+      const { error: surveyError } = await supabase
+        .from("user_surveys")
+        .upsert({
+          user_id: user.id,
+          injury_timing: data.injuryTime,
+          limb_location: data.injuryLocation,
+          amputation_level: data.injurySeverity,
+          government_funding: data.governmentFunding,
+          additional_info: data.additionalInfo,
+        }, {
+          onConflict: "user_id",
+        });
+
+      if (surveyError) throw surveyError;
+
+      // Generate roadmap
+      const roadmapData = generatePersonalizedRoadmap(data);
+
+      // Save roadmap to database
+      const { error: roadmapError } = await supabase
+        .from("user_roadmaps")
+        .upsert({
+          user_id: user.id,
+          roadmap_data: roadmapData,
+        }, {
+          onConflict: "user_id",
+        });
+
+      if (roadmapError) throw roadmapError;
+
+      // Also store in sessionStorage for immediate use
+      sessionStorage.setItem("assessmentData", JSON.stringify(data));
+
+      toast({
+        title: "Assessment Complete",
+        description: "Your personalized roadmap has been saved.",
+      });
+      
       navigate("/resources");
-    }, 1500);
+    } catch (error) {
+      console.error("Error saving assessment:", error);
+      toast({
+        title: "Error Saving",
+        description: "There was a problem saving your assessment. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setSaving(false);
+    }
   };
 
   const isStepValid = () => {
@@ -273,9 +329,11 @@ const Assessment = () => {
             <Button
               variant={step === totalSteps ? "accent" : "default"}
               onClick={handleNext}
-              disabled={!isStepValid()}
+              disabled={!isStepValid() || saving}
             >
-              {step === totalSteps ? (
+              {saving ? (
+                <span className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary-foreground" />
+              ) : step === totalSteps ? (
                 <>
                   Complete
                   <CheckCircle2 className="h-4 w-4 ml-2" />

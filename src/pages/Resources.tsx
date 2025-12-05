@@ -7,6 +7,8 @@ import { Badge } from "@/components/ui/badge";
 import RoadmapSectionComponent from "@/components/RoadmapSection";
 import ProstheticOptions from "@/components/ProstheticOptions";
 import ExportPDF from "@/components/ExportPDF";
+import { useAuth } from "@/hooks/useAuth";
+import { supabase } from "@/integrations/supabase/client";
 import { 
   ArrowLeft,
   CheckCircle2,
@@ -18,17 +20,81 @@ import { AssessmentData, PersonalizedRoadmap, generatePersonalizedRoadmap } from
 
 const Resources = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [assessmentData, setAssessmentData] = useState<AssessmentData | null>(null);
   const [roadmap, setRoadmap] = useState<PersonalizedRoadmap | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const storedData = sessionStorage.getItem("assessmentData");
-    if (storedData) {
-      const data: AssessmentData = JSON.parse(storedData);
-      setAssessmentData(data);
-      setRoadmap(generatePersonalizedRoadmap(data));
-    }
-  }, []);
+    const loadRoadmap = async () => {
+      if (!user) {
+        setLoading(false);
+        return;
+      }
+
+      try {
+        // Try to load from database first
+        const { data: roadmapData } = await supabase
+          .from("user_roadmaps")
+          .select("roadmap_data")
+          .eq("user_id", user.id)
+          .maybeSingle();
+
+        if (roadmapData?.roadmap_data) {
+          setRoadmap(roadmapData.roadmap_data as unknown as PersonalizedRoadmap);
+          
+          // Also fetch survey data for context
+          const { data: surveyData } = await supabase
+            .from("user_surveys")
+            .select("*")
+            .eq("user_id", user.id)
+            .maybeSingle();
+
+          if (surveyData) {
+            setAssessmentData({
+              injuryTime: surveyData.injury_timing,
+              injurySeverity: surveyData.amputation_level,
+              injuryLocation: surveyData.limb_location,
+              governmentFunding: surveyData.government_funding,
+              additionalInfo: surveyData.additional_info || "",
+            });
+          }
+        } else {
+          // Fallback to sessionStorage
+          const storedData = sessionStorage.getItem("assessmentData");
+          if (storedData) {
+            const data: AssessmentData = JSON.parse(storedData);
+            setAssessmentData(data);
+            setRoadmap(generatePersonalizedRoadmap(data));
+          }
+        }
+      } catch (error) {
+        console.error("Error loading roadmap:", error);
+        // Fallback to sessionStorage on error
+        const storedData = sessionStorage.getItem("assessmentData");
+        if (storedData) {
+          const data: AssessmentData = JSON.parse(storedData);
+          setAssessmentData(data);
+          setRoadmap(generatePersonalizedRoadmap(data));
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadRoadmap();
+  }, [user]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Navigation />
+        <div className="container mx-auto px-4 py-16 flex justify-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+        </div>
+      </div>
+    );
+  }
 
   // If no assessment data, show prompt to take assessment
   if (!assessmentData || !roadmap) {
