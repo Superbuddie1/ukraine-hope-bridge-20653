@@ -65,18 +65,23 @@ const Assessment = () => {
     setSaving(true);
     
     try {
+      // Delete existing survey and roadmap first, then insert new ones
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      await (supabase as any).from("user_surveys").delete().eq("user_id", user.id);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      await (supabase as any).from("user_roadmaps").delete().eq("user_id", user.id);
+
       // Save survey to database
-      const { error: surveyError } = await supabase
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const { error: surveyError } = await (supabase as any)
         .from("user_surveys")
-        .upsert({
+        .insert({
           user_id: user.id,
           injury_timing: data.injuryTime,
           limb_location: data.injuryLocation,
           amputation_level: data.injurySeverity,
           government_funding: data.governmentFunding,
           additional_info: data.additionalInfo,
-        }, {
-          onConflict: "user_id",
         });
 
       if (surveyError) throw surveyError;
@@ -85,13 +90,12 @@ const Assessment = () => {
       const roadmapData = generatePersonalizedRoadmap(data);
 
       // Save roadmap to database
-      const { error: roadmapError } = await supabase
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const { error: roadmapError } = await (supabase as any)
         .from("user_roadmaps")
-        .upsert({
+        .insert({
           user_id: user.id,
           roadmap_data: roadmapData,
-        }, {
-          onConflict: "user_id",
         });
 
       if (roadmapError) throw roadmapError;

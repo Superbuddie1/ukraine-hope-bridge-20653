@@ -34,7 +34,8 @@ const Resources = () => {
 
       try {
         // Try to load from database first
-        const { data: roadmapData } = await supabase
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const { data: roadmapData } = await (supabase as any)
           .from("user_roadmaps")
           .select("roadmap_data")
           .eq("user_id", user.id)
@@ -44,7 +45,8 @@ const Resources = () => {
           setRoadmap(roadmapData.roadmap_data as unknown as PersonalizedRoadmap);
           
           // Also fetch survey data for context
-          const { data: surveyData } = await supabase
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const { data: surveyData } = await (supabase as any)
             .from("user_surveys")
             .select("*")
             .eq("user_id", user.id)
