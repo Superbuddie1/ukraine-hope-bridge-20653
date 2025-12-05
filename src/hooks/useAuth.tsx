@@ -68,8 +68,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const resetPassword = async (email: string) => {
+    // Use production URL for password reset redirect
+    const productionUrl = "https://darkgrey-baboon-661246.hostingersite.com";
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}/auth?mode=reset`,
+      redirectTo: `${productionUrl}/auth?mode=reset`,
     });
     return { error: error as Error | null };
   };
