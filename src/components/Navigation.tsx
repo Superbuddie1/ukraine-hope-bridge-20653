@@ -37,20 +37,20 @@ const Navigation = () => {
           </Link>
           
           <div className="flex items-center gap-2">
+            <Link to="/">
+              <Button 
+                variant={isActive("/") ? "default" : "ghost"}
+                size="sm"
+              >
+                Home
+              </Button>
+            </Link>
             <Link to="/about">
               <Button 
                 variant={isActive("/about") ? "default" : "ghost"}
                 size="sm"
               >
                 About
-              </Button>
-            </Link>
-            <Link to="/upap">
-              <Button 
-                variant={isActive("/upap") ? "default" : "ghost"}
-                size="sm"
-              >
-                UPAP
               </Button>
             </Link>
 

@@ -7,7 +7,6 @@ import { AuthProvider } from "@/hooks/useAuth";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import Index from "./pages/Index";
 import About from "./pages/About";
-import UPAP from "./pages/UPAP";
 import Assessment from "./pages/Assessment";
 import Resources from "./pages/Resources";
 import Auth from "./pages/Auth";
@@ -26,7 +25,6 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/about" element={<About />} />
-            <Route path="/upap" element={<UPAP />} />
             <Route path="/auth" element={<Auth />} />
             <Route 
               path="/dashboard" 
