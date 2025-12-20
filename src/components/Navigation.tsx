@@ -1,7 +1,8 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Heart, LogOut, User, LayoutDashboard } from "lucide-react";
+import { LogOut, User, LayoutDashboard } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
+import logo from "@/assets/logo.png";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -27,9 +28,11 @@ const Navigation = () => {
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2 group">
-            <div className="bg-primary rounded-full p-2 group-hover:scale-110 transition-transform">
-              <Heart className="h-5 w-5 text-primary-foreground" />
-            </div>
+            <img 
+              src={logo} 
+              alt="Ukraine Prosthetic Assistance Logo" 
+              className="h-10 w-auto group-hover:scale-110 transition-transform"
+            />
             <span className="text-xl font-bold text-foreground hidden sm:inline">Ukraine Prosthetic Aid</span>
           </Link>
           
