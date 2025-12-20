@@ -16,7 +16,8 @@ import {
   Clock,
   Sparkles
 } from "lucide-react";
-import { AssessmentData, PersonalizedRoadmap, generatePersonalizedRoadmap } from "@/lib/assessmentLogic";
+import { PersonalizedRoadmap, generatePersonalizedRoadmap } from "@/lib/assessmentLogic";
+import { AssessmentData } from "@/pages/Assessment";
 
 const Resources = () => {
   const navigate = useNavigate();
@@ -54,10 +55,11 @@ const Resources = () => {
 
           if (surveyData) {
             setAssessmentData({
-              injuryTime: surveyData.injury_timing,
-              injurySeverity: surveyData.amputation_level,
-              injuryLocation: surveyData.limb_location,
-              governmentFunding: surveyData.government_funding,
+              status: surveyData.government_funding,
+              preSurgery: '',
+              amputationType: surveyData.limb_location,
+              amputationLevel: surveyData.amputation_level,
+              currentStage: surveyData.injury_timing,
               additionalInfo: surveyData.additional_info || "",
             });
           }

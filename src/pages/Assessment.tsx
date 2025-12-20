@@ -12,12 +12,14 @@ import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { generatePersonalizedRoadmap } from "@/lib/assessmentLogic";
+import DisclaimerDialog from "@/components/DisclaimerDialog";
 
-interface AssessmentData {
-  injuryTime: string;
-  injurySeverity: string;
-  injuryLocation: string;
-  governmentFunding: string;
+export interface AssessmentData {
+  status: string;
+  preSurgery: string;
+  amputationType: string;
+  amputationLevel: string;
+  currentStage: string;
   additionalInfo: string;
 }
 
@@ -25,13 +27,15 @@ const Assessment = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const { user } = useAuth();
+  const [showDisclaimer, setShowDisclaimer] = useState(true);
   const [step, setStep] = useState(1);
   const [saving, setSaving] = useState(false);
   const [data, setData] = useState<AssessmentData>({
-    injuryTime: "",
-    injurySeverity: "",
-    injuryLocation: "",
-    governmentFunding: "",
+    status: "",
+    preSurgery: "",
+    amputationType: "",
+    amputationLevel: "",
+    currentStage: "",
     additionalInfo: "",
   });
 
@@ -77,10 +81,10 @@ const Assessment = () => {
         .from("user_surveys")
         .insert({
           user_id: user.id,
-          injury_timing: data.injuryTime,
-          limb_location: data.injuryLocation,
-          amputation_level: data.injurySeverity,
-          government_funding: data.governmentFunding,
+          injury_timing: data.currentStage,
+          limb_location: data.amputationType,
+          amputation_level: data.amputationLevel,
+          government_funding: data.status,
           additional_info: data.additionalInfo,
         });
 
@@ -124,13 +128,13 @@ const Assessment = () => {
   const isStepValid = () => {
     switch (step) {
       case 1:
-        return data.injuryTime !== "";
+        return data.status !== "";
       case 2:
-        return data.injurySeverity !== "";
+        return data.preSurgery !== "";
       case 3:
-        return data.injuryLocation !== "";
+        return data.amputationType !== "" && data.amputationLevel !== "";
       case 4:
-        return data.governmentFunding !== "";
+        return data.currentStage !== "";
       case 5:
         return true; // Additional info is optional
       default:
@@ -138,9 +142,33 @@ const Assessment = () => {
     }
   };
 
+  const getAmputationLevelOptions = () => {
+    if (data.amputationType === "upper-limb") {
+      return [
+        { value: "shoulder-disarticulation", label: "Shoulder disarticulation" },
+        { value: "above-elbow", label: "Above elbow" },
+        { value: "below-elbow", label: "Below elbow" },
+        { value: "wrist", label: "Wrist" },
+        { value: "fingers", label: "Finger(s)" },
+      ];
+    } else if (data.amputationType === "lower-limb") {
+      return [
+        { value: "hip-disarticulation", label: "Hip disarticulation" },
+        { value: "above-knee", label: "Above knee" },
+        { value: "below-knee", label: "Below knee" },
+        { value: "partial-foot", label: "Partial foot" },
+      ];
+    }
+    return [];
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
+      <DisclaimerDialog 
+        open={showDisclaimer} 
+        onAccept={() => setShowDisclaimer(false)} 
+      />
       
       <div className="container mx-auto px-4 py-16 max-w-2xl">
         <div className="mb-8">
@@ -167,28 +195,20 @@ const Assessment = () => {
             <div className="space-y-6">
               <div>
                 <h2 className="text-2xl font-semibold mb-2 text-card-foreground">
-                  When did the injury occur?
+                  What is your status?
                 </h2>
                 <p className="text-muted-foreground mb-6">
-                  This helps us understand your immediate needs and recovery timeline.
+                  This helps us provide resources specific to your situation.
                 </p>
               </div>
-              <RadioGroup value={data.injuryTime} onValueChange={(value) => setData({ ...data, injuryTime: value })}>
+              <RadioGroup value={data.status} onValueChange={(value) => setData({ ...data, status: value })}>
                 <div className="flex items-center space-x-2 p-4 rounded-lg border border-input hover:bg-accent/50 transition-colors cursor-pointer">
-                  <RadioGroupItem value="less-3-months" id="time1" />
-                  <Label htmlFor="time1" className="flex-1 cursor-pointer">Less than 3 months ago</Label>
+                  <RadioGroupItem value="military" id="status1" />
+                  <Label htmlFor="status1" className="flex-1 cursor-pointer">Military</Label>
                 </div>
                 <div className="flex items-center space-x-2 p-4 rounded-lg border border-input hover:bg-accent/50 transition-colors cursor-pointer">
-                  <RadioGroupItem value="3-6-months" id="time2" />
-                  <Label htmlFor="time2" className="flex-1 cursor-pointer">3-6 months ago</Label>
-                </div>
-                <div className="flex items-center space-x-2 p-4 rounded-lg border border-input hover:bg-accent/50 transition-colors cursor-pointer">
-                  <RadioGroupItem value="6-12-months" id="time3" />
-                  <Label htmlFor="time3" className="flex-1 cursor-pointer">6-12 months ago</Label>
-                </div>
-                <div className="flex items-center space-x-2 p-4 rounded-lg border border-input hover:bg-accent/50 transition-colors cursor-pointer">
-                  <RadioGroupItem value="more-1-year" id="time4" />
-                  <Label htmlFor="time4" className="flex-1 cursor-pointer">More than 1 year ago</Label>
+                  <RadioGroupItem value="civilian" id="status2" />
+                  <Label htmlFor="status2" className="flex-1 cursor-pointer">Civilian</Label>
                 </div>
               </RadioGroup>
             </div>
@@ -198,28 +218,20 @@ const Assessment = () => {
             <div className="space-y-6">
               <div>
                 <h2 className="text-2xl font-semibold mb-2 text-card-foreground">
-                  What is the severity of the amputation?
+                  Pre-Surgery Information
                 </h2>
                 <p className="text-muted-foreground mb-6">
-                  Understanding the level helps us match you with appropriate prosthetic options.
+                  What type of amputation procedure applies to your situation?
                 </p>
               </div>
-              <RadioGroup value={data.injurySeverity} onValueChange={(value) => setData({ ...data, injurySeverity: value })}>
+              <RadioGroup value={data.preSurgery} onValueChange={(value) => setData({ ...data, preSurgery: value })}>
                 <div className="flex items-center space-x-2 p-4 rounded-lg border border-input hover:bg-accent/50 transition-colors cursor-pointer">
-                  <RadioGroupItem value="partial-digit" id="sev1" />
-                  <Label htmlFor="sev1" className="flex-1 cursor-pointer">Partial digit/finger</Label>
+                  <RadioGroupItem value="planned" id="surgery1" />
+                  <Label htmlFor="surgery1" className="flex-1 cursor-pointer">Planned amputation</Label>
                 </div>
                 <div className="flex items-center space-x-2 p-4 rounded-lg border border-input hover:bg-accent/50 transition-colors cursor-pointer">
-                  <RadioGroupItem value="below-elbow-knee" id="sev2" />
-                  <Label htmlFor="sev2" className="flex-1 cursor-pointer">Below elbow/knee</Label>
-                </div>
-                <div className="flex items-center space-x-2 p-4 rounded-lg border border-input hover:bg-accent/50 transition-colors cursor-pointer">
-                  <RadioGroupItem value="above-elbow-knee" id="sev3" />
-                  <Label htmlFor="sev3" className="flex-1 cursor-pointer">Above elbow/knee</Label>
-                </div>
-                <div className="flex items-center space-x-2 p-4 rounded-lg border border-input hover:bg-accent/50 transition-colors cursor-pointer">
-                  <RadioGroupItem value="multiple" id="sev4" />
-                  <Label htmlFor="sev4" className="flex-1 cursor-pointer">Multiple limbs</Label>
+                  <RadioGroupItem value="emergency" id="surgery2" />
+                  <Label htmlFor="surgery2" className="flex-1 cursor-pointer">Emergency amputation (trauma)</Label>
                 </div>
               </RadioGroup>
             </div>
@@ -229,34 +241,40 @@ const Assessment = () => {
             <div className="space-y-6">
               <div>
                 <h2 className="text-2xl font-semibold mb-2 text-card-foreground">
-                  Which limb(s) are affected?
+                  What type of amputation?
                 </h2>
                 <p className="text-muted-foreground mb-6">
-                  This helps us connect you with specialized care for your specific needs.
+                  Select the limb type and level of amputation.
                 </p>
               </div>
-              <RadioGroup value={data.injuryLocation} onValueChange={(value) => setData({ ...data, injuryLocation: value })}>
-                <div className="flex items-center space-x-2 p-4 rounded-lg border border-input hover:bg-accent/50 transition-colors cursor-pointer">
-                  <RadioGroupItem value="upper-right" id="loc1" />
-                  <Label htmlFor="loc1" className="flex-1 cursor-pointer">Right arm/hand</Label>
+              
+              <div className="space-y-4">
+                <Label className="text-base font-medium">Limb Type</Label>
+                <RadioGroup value={data.amputationType} onValueChange={(value) => setData({ ...data, amputationType: value, amputationLevel: "" })}>
+                  <div className="flex items-center space-x-2 p-4 rounded-lg border border-input hover:bg-accent/50 transition-colors cursor-pointer">
+                    <RadioGroupItem value="upper-limb" id="type1" />
+                    <Label htmlFor="type1" className="flex-1 cursor-pointer">Upper Limb</Label>
+                  </div>
+                  <div className="flex items-center space-x-2 p-4 rounded-lg border border-input hover:bg-accent/50 transition-colors cursor-pointer">
+                    <RadioGroupItem value="lower-limb" id="type2" />
+                    <Label htmlFor="type2" className="flex-1 cursor-pointer">Lower Limb</Label>
+                  </div>
+                </RadioGroup>
+              </div>
+
+              {data.amputationType && (
+                <div className="space-y-4 mt-6">
+                  <Label className="text-base font-medium">Amputation Level</Label>
+                  <RadioGroup value={data.amputationLevel} onValueChange={(value) => setData({ ...data, amputationLevel: value })}>
+                    {getAmputationLevelOptions().map((option, index) => (
+                      <div key={option.value} className="flex items-center space-x-2 p-4 rounded-lg border border-input hover:bg-accent/50 transition-colors cursor-pointer">
+                        <RadioGroupItem value={option.value} id={`level${index}`} />
+                        <Label htmlFor={`level${index}`} className="flex-1 cursor-pointer">{option.label}</Label>
+                      </div>
+                    ))}
+                  </RadioGroup>
                 </div>
-                <div className="flex items-center space-x-2 p-4 rounded-lg border border-input hover:bg-accent/50 transition-colors cursor-pointer">
-                  <RadioGroupItem value="upper-left" id="loc2" />
-                  <Label htmlFor="loc2" className="flex-1 cursor-pointer">Left arm/hand</Label>
-                </div>
-                <div className="flex items-center space-x-2 p-4 rounded-lg border border-input hover:bg-accent/50 transition-colors cursor-pointer">
-                  <RadioGroupItem value="lower-right" id="loc3" />
-                  <Label htmlFor="loc3" className="flex-1 cursor-pointer">Right leg/foot</Label>
-                </div>
-                <div className="flex items-center space-x-2 p-4 rounded-lg border border-input hover:bg-accent/50 transition-colors cursor-pointer">
-                  <RadioGroupItem value="lower-left" id="loc4" />
-                  <Label htmlFor="loc4" className="flex-1 cursor-pointer">Left leg/foot</Label>
-                </div>
-                <div className="flex items-center space-x-2 p-4 rounded-lg border border-input hover:bg-accent/50 transition-colors cursor-pointer">
-                  <RadioGroupItem value="multiple-limbs" id="loc5" />
-                  <Label htmlFor="loc5" className="flex-1 cursor-pointer">Multiple limbs</Label>
-                </div>
-              </RadioGroup>
+              )}
             </div>
           )}
 
@@ -264,32 +282,44 @@ const Assessment = () => {
             <div className="space-y-6">
               <div>
                 <h2 className="text-2xl font-semibold mb-2 text-card-foreground">
-                  Government funding status
+                  Select the stage you are at right now
                 </h2>
                 <p className="text-muted-foreground mb-6">
-                  Let us know about any funding programs you've accessed or applied to.
+                  This helps us provide the most relevant next steps for your journey.
                 </p>
               </div>
-              <RadioGroup value={data.governmentFunding} onValueChange={(value) => setData({ ...data, governmentFunding: value })}>
+              <RadioGroup value={data.currentStage} onValueChange={(value) => setData({ ...data, currentStage: value })}>
                 <div className="flex items-center space-x-2 p-4 rounded-lg border border-input hover:bg-accent/50 transition-colors cursor-pointer">
-                  <RadioGroupItem value="none" id="fund1" />
-                  <Label htmlFor="fund1" className="flex-1 cursor-pointer">Not yet applied</Label>
+                  <RadioGroupItem value="pre-surgical" id="stage1" />
+                  <Label htmlFor="stage1" className="flex-1 cursor-pointer">Pre-Surgical</Label>
                 </div>
                 <div className="flex items-center space-x-2 p-4 rounded-lg border border-input hover:bg-accent/50 transition-colors cursor-pointer">
-                  <RadioGroupItem value="applied" id="fund2" />
-                  <Label htmlFor="fund2" className="flex-1 cursor-pointer">Application pending</Label>
+                  <RadioGroupItem value="acute-post-surgical" id="stage2" />
+                  <Label htmlFor="stage2" className="flex-1 cursor-pointer">Acute Post-Surgical</Label>
                 </div>
                 <div className="flex items-center space-x-2 p-4 rounded-lg border border-input hover:bg-accent/50 transition-colors cursor-pointer">
-                  <RadioGroupItem value="approved" id="fund3" />
-                  <Label htmlFor="fund3" className="flex-1 cursor-pointer">Funding approved</Label>
+                  <RadioGroupItem value="in-patient-post-surgical" id="stage3" />
+                  <Label htmlFor="stage3" className="flex-1 cursor-pointer">In-Patient Post-Surgical</Label>
                 </div>
                 <div className="flex items-center space-x-2 p-4 rounded-lg border border-input hover:bg-accent/50 transition-colors cursor-pointer">
-                  <RadioGroupItem value="receiving" id="fund4" />
-                  <Label htmlFor="fund4" className="flex-1 cursor-pointer">Currently receiving funds</Label>
+                  <RadioGroupItem value="rehabilitation" id="stage4" />
+                  <Label htmlFor="stage4" className="flex-1 cursor-pointer">Rehabilitation and Assistive Device Prescription/Selection</Label>
                 </div>
                 <div className="flex items-center space-x-2 p-4 rounded-lg border border-input hover:bg-accent/50 transition-colors cursor-pointer">
-                  <RadioGroupItem value="unsure" id="fund5" />
-                  <Label htmlFor="fund5" className="flex-1 cursor-pointer">Unsure/need guidance</Label>
+                  <RadioGroupItem value="pre-prosthetic" id="stage5" />
+                  <Label htmlFor="stage5" className="flex-1 cursor-pointer">Pre-Prosthetic Rehabilitation (For Prosthetic Users)</Label>
+                </div>
+                <div className="flex items-center space-x-2 p-4 rounded-lg border border-input hover:bg-accent/50 transition-colors cursor-pointer">
+                  <RadioGroupItem value="prosthetic-fitting" id="stage6" />
+                  <Label htmlFor="stage6" className="flex-1 cursor-pointer">Prosthetics Provider Selection and Prosthetic Fitting</Label>
+                </div>
+                <div className="flex items-center space-x-2 p-4 rounded-lg border border-input hover:bg-accent/50 transition-colors cursor-pointer">
+                  <RadioGroupItem value="prosthetic-training" id="stage7" />
+                  <Label htmlFor="stage7" className="flex-1 cursor-pointer">Prosthetic Training</Label>
+                </div>
+                <div className="flex items-center space-x-2 p-4 rounded-lg border border-input hover:bg-accent/50 transition-colors cursor-pointer">
+                  <RadioGroupItem value="community-reintegration" id="stage8" />
+                  <Label htmlFor="stage8" className="flex-1 cursor-pointer">Community Reintegration (Potential Job Retraining, Etc)</Label>
                 </div>
               </RadioGroup>
             </div>
