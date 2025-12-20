@@ -1,5 +1,7 @@
 import { RoadmapSection as RoadmapSectionType } from "@/lib/assessmentLogic";
 import RoadmapCard from "./RoadmapCard";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { 
   AlertTriangle, 
   Wallet, 
@@ -7,7 +9,9 @@ import {
   Cog, 
   Heart, 
   Users,
-  MapPin 
+  MapPin,
+  ClipboardList,
+  ExternalLink
 } from "lucide-react";
 
 interface RoadmapSectionProps {
@@ -22,6 +26,7 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   Cog,
   Heart,
   Users,
+  ClipboardList,
 };
 
 const RoadmapSectionComponent = ({ section, index }: RoadmapSectionProps) => {
@@ -85,17 +90,48 @@ const RoadmapSectionComponent = ({ section, index }: RoadmapSectionProps) => {
             <p className="text-sm text-muted-foreground italic mb-4">{section.titleUa}</p>
           )}
 
+          {/* Roadmap Steps (for Next Steps section) */}
+          {section.steps && section.steps.length > 0 && (
+            <div className="space-y-3 mb-4">
+              {section.steps.map((step, idx) => (
+                <Card key={step.id} className="p-4 bg-background/60 backdrop-blur-sm border border-border/50">
+                  <div className="flex items-start gap-3">
+                    <div className={`shrink-0 w-7 h-7 rounded-full ${bgColor} flex items-center justify-center`}>
+                      <span className="text-xs font-bold text-primary-foreground">{idx + 1}</span>
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <h4 className="font-semibold text-card-foreground mb-1">{step.title}</h4>
+                      <p className="text-sm text-muted-foreground">{step.description}</p>
+                      {step.link && (
+                        <Button
+                          variant="link"
+                          className="h-auto p-0 mt-2 text-primary"
+                          onClick={() => window.open(step.link, '_blank')}
+                        >
+                          {step.linkText || 'Learn more'}
+                          <ExternalLink className="h-3 w-3 ml-1" />
+                        </Button>
+                      )}
+                    </div>
+                  </div>
+                </Card>
+              ))}
+            </div>
+          )}
+
           {/* Resource Cards */}
-          <div className="space-y-3">
-            {section.recommendations.map((rec, idx) => (
-              <RoadmapCard
-                key={rec.resource.id}
-                recommendation={rec}
-                index={idx}
-                variant={isEven ? 'blue' : 'yellow'}
-              />
-            ))}
-          </div>
+          {section.recommendations.length > 0 && (
+            <div className="space-y-3">
+              {section.recommendations.map((rec, idx) => (
+                <RoadmapCard
+                  key={rec.resource.id}
+                  recommendation={rec}
+                  index={idx}
+                  variant={isEven ? 'blue' : 'yellow'}
+                />
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>
