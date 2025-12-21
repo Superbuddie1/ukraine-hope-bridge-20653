@@ -74,10 +74,10 @@ const Index = () => {
             </h1>
             
             <p 
-              className="text-base sm:text-lg md:text-2xl text-muted-foreground max-w-2xl mx-auto opacity-0 animate-fade-in-up"
+              className="text-lg sm:text-xl md:text-2xl text-muted-foreground max-w-xl mx-auto opacity-0 animate-fade-in-up"
               style={{ animationDelay: '0.6s' }}
             >
-              Navigate government funding, connect with specialized surgeons, and access comprehensive resources for prosthetic care and rehabilitation.
+              Receive a curated roadmap to assist you throughout your prosthetic journey.
             </p>
             
             <div 
