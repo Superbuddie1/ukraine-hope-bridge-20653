@@ -101,7 +101,8 @@ export const RegionSelector = ({ value, onChange }: RegionSelectorProps) => {
                 {(isSelected || isHovered) && (
                   <motion.div
                     layoutId="region-glow"
-                    className="absolute inset-0 bg-gradient-to-br from-primary/20 via-primary/10 to-transparent"
+                    className="absolute inset-0"
+                    style={{ background: 'linear-gradient(135deg, hsl(210 100% 36% / 0.15), hsl(0 0% 100% / 0.5), hsl(51 100% 50% / 0.15))' }}
                     initial={false}
                     transition={{ type: "spring", stiffness: 500, damping: 30 }}
                   />
@@ -111,7 +112,7 @@ export const RegionSelector = ({ value, onChange }: RegionSelectorProps) => {
                 <motion.div
                   className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
                   style={{
-                    background: 'linear-gradient(110deg, transparent 25%, hsl(var(--primary) / 0.1) 50%, transparent 75%)',
+                    background: 'linear-gradient(110deg, hsl(210 100% 36% / 0.05) 25%, hsl(0 0% 100% / 0.3) 50%, hsl(51 100% 50% / 0.05) 75%)',
                     backgroundSize: '200% 100%',
                   }}
                   animate={isHovered ? { backgroundPosition: ['200% 0', '-200% 0'] } : {}}

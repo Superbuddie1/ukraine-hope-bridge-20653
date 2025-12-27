@@ -9,9 +9,9 @@ interface ProstheticOptionsProps {
 
 const ProstheticOptions = ({ options, timeline }: ProstheticOptionsProps) => {
   return (
-    <Card className="bg-gradient-to-br from-primary/5 to-accent/5 rounded-2xl p-6 border-2 border-primary/30 shadow-xl">
+    <Card className="rounded-2xl p-6 border-2 border-primary/30 shadow-xl" style={{ background: 'linear-gradient(135deg, hsl(210 100% 36% / 0.05), hsl(0 0% 100%), hsl(51 100% 50% / 0.05))' }}>
       <div className="flex items-start gap-4">
-        <div className="bg-gradient-to-br from-primary to-accent rounded-full p-3 shrink-0 shadow-lg">
+        <div className="rounded-full p-3 shrink-0 shadow-lg" style={{ background: 'linear-gradient(135deg, hsl(210 100% 45%), hsl(0 0% 98%), hsl(51 100% 55%))' }}>
           <Cog className="h-6 w-6 text-primary-foreground" />
         </div>
         <div className="flex-1">
