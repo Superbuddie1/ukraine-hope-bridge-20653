@@ -2,12 +2,14 @@
 
 import { Resource, allResources } from '@/data/ukrainianResources';
 import { AssessmentData } from '@/pages/Assessment';
+import { REGION_PROXIMITY, RegionId } from '@/components/RegionSelector';
 
 export interface PersonalizedRecommendation {
   resource: Resource;
   priority: 'critical' | 'high' | 'medium' | 'low';
   reason: string;
   timeframe: string;
+  regionMatch?: 'exact' | 'nearby' | 'other';
 }
 
 export interface RoadmapStep {
@@ -334,7 +336,19 @@ function calculateUrgency(data: AssessmentData): 'critical' | 'high' | 'moderate
   }
 }
 
-// Filter resources for recommendations
+// Get region match level
+function getRegionMatch(resourceRegion: string | undefined, userRegion: string): 'exact' | 'nearby' | 'other' {
+  if (!resourceRegion || !userRegion) return 'other';
+  
+  if (resourceRegion === userRegion) return 'exact';
+  
+  const nearbyRegions = REGION_PROXIMITY[userRegion as RegionId] || [];
+  if (nearbyRegions.includes(resourceRegion as RegionId)) return 'nearby';
+  
+  return 'other';
+}
+
+// Filter resources for recommendations with region prioritization
 function getFilteredResources(
   resources: Resource[],
   data: AssessmentData,
@@ -346,6 +360,7 @@ function getFilteredResources(
     let priority: 'critical' | 'high' | 'medium' | 'low' = 'medium';
     let reason = '';
     let timeframe = 'Within 1 month';
+    const regionMatch = getRegionMatch(resource.region, data.region);
     
     switch (category) {
       case 'medical':
@@ -357,6 +372,14 @@ function getFilteredResources(
           priority = 'high';
           reason = 'Important for continued recovery';
           timeframe = 'Within 2 weeks';
+        }
+        
+        // Boost priority based on region match
+        if (regionMatch === 'exact') {
+          reason = `In your region - ${reason}`;
+          if (priority === 'medium') priority = 'high';
+        } else if (regionMatch === 'nearby') {
+          reason = `Nearby region - ${reason}`;
         }
         break;
         
@@ -400,11 +423,22 @@ function getFilteredResources(
       priority,
       reason,
       timeframe,
+      regionMatch,
     });
   });
   
+  // Sort by region match first, then by priority
   const priorityOrder = { critical: 0, high: 1, medium: 2, low: 3 };
-  return recommendations.sort((a, b) => priorityOrder[a.priority] - priorityOrder[b.priority]);
+  const regionOrder = { exact: 0, nearby: 1, other: 2 };
+  
+  return recommendations.sort((a, b) => {
+    // First sort by region match
+    const regionDiff = regionOrder[a.regionMatch || 'other'] - regionOrder[b.regionMatch || 'other'];
+    if (regionDiff !== 0) return regionDiff;
+    
+    // Then by priority
+    return priorityOrder[a.priority] - priorityOrder[b.priority];
+  });
 }
 
 // Main function to generate personalized roadmap

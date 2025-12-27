@@ -77,6 +77,7 @@ export type Database = {
           id: string
           injury_timing: string
           limb_location: string
+          region: string | null
           updated_at: string
           user_id: string
         }
@@ -88,6 +89,7 @@ export type Database = {
           id?: string
           injury_timing: string
           limb_location: string
+          region?: string | null
           updated_at?: string
           user_id: string
         }
@@ -99,6 +101,7 @@ export type Database = {
           id?: string
           injury_timing?: string
           limb_location?: string
+          region?: string | null
           updated_at?: string
           user_id?: string
         }

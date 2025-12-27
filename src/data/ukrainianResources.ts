@@ -12,6 +12,7 @@ export interface Resource {
   type: 'government' | 'hospital' | 'rehab' | 'ngo' | 'manufacturer' | 'financial' | 'support';
   urgencyLevel?: 'immediate' | 'high' | 'medium' | 'low';
   tags: string[];
+  region?: string; // Region ID for location-based prioritization
 }
 
 export interface ResourceCategory {
@@ -77,6 +78,7 @@ export const medicalFacilities: Resource[] = [
     website: 'https://gvkg.com.ua',
     type: 'hospital',
     tags: ['military', 'surgery', 'prosthetics', 'kyiv'],
+    region: 'kyiv',
   },
   {
     id: 'med-2',
@@ -87,6 +89,7 @@ export const medicalFacilities: Resource[] = [
     address: 'Lviv, Chervonoi Kalyny Ave. 35',
     type: 'hospital',
     tags: ['regional', 'rehabilitation', 'lviv'],
+    region: 'lviv',
   },
   {
     id: 'med-3',
@@ -99,6 +102,7 @@ export const medicalFacilities: Resource[] = [
     type: 'rehab',
     urgencyLevel: 'high',
     tags: ['bionic', 'free', 'advanced', 'lviv'],
+    region: 'lviv',
   },
   {
     id: 'med-4',
@@ -109,6 +113,7 @@ export const medicalFacilities: Resource[] = [
     website: 'https://unbroken.ua',
     type: 'rehab',
     tags: ['veterans', 'rehabilitation', 'comprehensive'],
+    region: 'kyiv',
   },
   {
     id: 'med-5',
@@ -119,6 +124,7 @@ export const medicalFacilities: Resource[] = [
     address: 'Zaporizhzhia, Sobornyi Ave. 88',
     type: 'rehab',
     tags: ['lower-limb', 'regional', 'zaporizhzhia'],
+    region: 'zaporizhzhia',
   },
   {
     id: 'med-6',
@@ -129,6 +135,51 @@ export const medicalFacilities: Resource[] = [
     address: 'Kharkiv, Nauky Ave. 4',
     type: 'rehab',
     tags: ['rehabilitation', 'training', 'kharkiv'],
+    region: 'kharkiv',
+  },
+  {
+    id: 'med-7',
+    title: 'Odesa Regional Rehabilitation Center',
+    titleUa: 'Одеський обласний реабілітаційний центр',
+    description: 'Comprehensive rehabilitation services for amputees in the southern region.',
+    contact: '+380 48 700 1234',
+    address: 'Odesa, Preobrazhenska St. 15',
+    type: 'rehab',
+    tags: ['rehabilitation', 'regional', 'odesa'],
+    region: 'odesa',
+  },
+  {
+    id: 'med-8',
+    title: 'Dnipro Military Hospital',
+    titleUa: 'Дніпровський військовий госпіталь',
+    description: 'Major military medical facility serving the eastern region with prosthetic and rehabilitation services.',
+    contact: '+380 56 777 8888',
+    address: 'Dnipro, Soborna Sq. 12',
+    type: 'hospital',
+    tags: ['military', 'surgery', 'dnipro'],
+    region: 'dnipropetrovsk',
+  },
+  {
+    id: 'med-9',
+    title: 'Vinnytsia Regional Hospital - Rehabilitation Unit',
+    titleUa: 'Вінницька обласна лікарня - Реабілітаційне відділення',
+    description: 'Regional hospital with dedicated rehabilitation services for amputees.',
+    contact: '+380 43 255 6789',
+    address: 'Vinnytsia, Pirogova St. 46',
+    type: 'hospital',
+    tags: ['regional', 'rehabilitation', 'vinnytsia'],
+    region: 'vinnytsia',
+  },
+  {
+    id: 'med-10',
+    title: 'Poltava Prosthetic Enterprise',
+    titleUa: 'Полтавське протезне підприємство',
+    description: 'State prosthetic manufacturing and fitting center serving central Ukraine.',
+    contact: '+380 53 222 3456',
+    address: 'Poltava, Yevropeyska St. 100',
+    type: 'rehab',
+    tags: ['prosthetics', 'fitting', 'poltava'],
+    region: 'poltava',
   },
 ];
 
