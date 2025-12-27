@@ -33,7 +33,7 @@ const Navigation = () => {
               alt="Ukraine Prosthetic Assistance Logo" 
               className="h-10 w-auto group-hover:scale-110 transition-transform"
             />
-            <span className="text-xl font-bold text-foreground hidden sm:inline">Ukraine Prosthetic Aid</span>
+            <span className="text-xl font-bold text-foreground hidden sm:inline">Prosthemap</span>
           </Link>
           
           <div className="flex items-center gap-2">

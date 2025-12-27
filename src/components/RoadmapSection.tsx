@@ -51,7 +51,7 @@ const RoadmapSectionComponent = ({ section, index }: RoadmapSectionProps) => {
       <div className="absolute left-1/2 top-0 transform -translate-x-1/2 -translate-y-4 z-20 hidden md:block">
         <div className={`${bgColor} rounded-full p-5 shadow-2xl border-4 border-background`}>
           <div className="relative">
-            <Icon className="h-7 w-7 text-primary-foreground" />
+            <Icon className="h-7 w-7 text-black" />
             <div className="absolute -top-2 -right-2 bg-background rounded-full w-6 h-6 flex items-center justify-center border-2 border-current">
               <span className="text-xs font-bold">{index + 1}</span>
             </div>
@@ -70,7 +70,7 @@ const RoadmapSectionComponent = ({ section, index }: RoadmapSectionProps) => {
           {/* Mobile Step Icon */}
           <div className="md:hidden flex items-center gap-3 mb-4">
             <div className={`${bgColor} rounded-full p-3`}>
-              <Icon className="h-5 w-5 text-primary-foreground" />
+              <Icon className="h-5 w-5 text-black" />
             </div>
             <span className={`text-xl font-bold ${textColor}`}>Step {index + 1}</span>
           </div>
