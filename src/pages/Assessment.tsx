@@ -13,6 +13,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { generatePersonalizedRoadmap } from "@/lib/assessmentLogic";
 import DisclaimerDialog from "@/components/DisclaimerDialog";
+import { RegionSelector } from "@/components/RegionSelector";
 
 export interface AssessmentData {
   status: string;
@@ -21,6 +22,7 @@ export interface AssessmentData {
   amputationLevel: string;
   currentStage: string;
   additionalInfo: string;
+  region: string;
 }
 
 const Assessment = () => {
@@ -37,9 +39,10 @@ const Assessment = () => {
     amputationLevel: "",
     currentStage: "",
     additionalInfo: "",
+    region: "",
   });
 
-  const totalSteps = 5;
+  const totalSteps = 6;
   const progress = (step / totalSteps) * 100;
 
   const handleNext = () => {
@@ -86,6 +89,7 @@ const Assessment = () => {
           amputation_level: data.amputationLevel,
           government_funding: data.status,
           additional_info: data.additionalInfo,
+          region: data.region,
         });
 
       if (surveyError) throw surveyError;
@@ -136,6 +140,8 @@ const Assessment = () => {
       case 4:
         return data.currentStage !== "";
       case 5:
+        return data.region !== "";
+      case 6:
         return true; // Additional info is optional
       default:
         return false;
@@ -326,6 +332,23 @@ const Assessment = () => {
           )}
 
           {step === 5 && (
+            <div className="space-y-6">
+              <div>
+                <h2 className="text-2xl font-semibold mb-2 text-card-foreground">
+                  Which region are you from?
+                </h2>
+                <p className="text-muted-foreground mb-6">
+                  This helps us prioritize clinics and resources in your area.
+                </p>
+              </div>
+              <RegionSelector
+                value={data.region}
+                onChange={(value) => setData({ ...data, region: value })}
+              />
+            </div>
+          )}
+
+          {step === 6 && (
             <div className="space-y-6">
               <div>
                 <h2 className="text-2xl font-semibold mb-2 text-card-foreground">

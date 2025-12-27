@@ -61,6 +61,7 @@ const Resources = () => {
               amputationLevel: surveyData.amputation_level,
               currentStage: surveyData.injury_timing,
               additionalInfo: surveyData.additional_info || "",
+              region: surveyData.region || "",
             });
           }
         } else {
