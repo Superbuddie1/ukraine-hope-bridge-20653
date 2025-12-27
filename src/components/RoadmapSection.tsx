@@ -36,8 +36,8 @@ const RoadmapSectionComponent = ({ section, index }: RoadmapSectionProps) => {
   const bgColor = isEven ? 'bg-primary' : 'bg-accent';
   const borderColor = isEven ? 'border-primary' : 'border-accent';
   const textColor = isEven ? 'text-primary' : 'text-accent';
-  const gradientFrom = isEven ? 'from-primary/5' : 'from-accent/5';
-  const gradientTo = isEven ? 'to-primary/10' : 'to-accent/10';
+  // Ukraine flag gradient: Blue to White to Yellow
+  const gradientStyle = { background: 'linear-gradient(135deg, hsl(210 100% 36% / 0.05), hsl(0 0% 100%), hsl(51 100% 50% / 0.05))' };
 
   const urgencyBadge = {
     immediate: { label: 'Do Now', className: 'bg-destructive text-destructive-foreground' },
@@ -66,7 +66,7 @@ const RoadmapSectionComponent = ({ section, index }: RoadmapSectionProps) => {
 
       {/* Section Content */}
       <div className={`md:w-[calc(50%-3rem)] ${isEven ? 'md:ml-0 md:mr-auto md:pr-12' : 'md:ml-auto md:mr-0 md:pl-12'}`}>
-        <div className={`bg-gradient-to-br ${gradientFrom} ${gradientTo} rounded-2xl p-5 border-2 ${borderColor} shadow-xl hover:shadow-2xl transition-all duration-300`}>
+        <div className={`rounded-2xl p-5 border-2 ${borderColor} shadow-xl hover:shadow-2xl transition-all duration-300`} style={gradientStyle}>
           {/* Mobile Step Icon */}
           <div className="md:hidden flex items-center gap-3 mb-4">
             <div className={`${bgColor} rounded-full p-3`}>

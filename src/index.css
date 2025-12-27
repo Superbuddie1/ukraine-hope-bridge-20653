@@ -43,7 +43,9 @@ All colors MUST be HSL.
     --radius: 0.75rem;
 
     /* Custom design tokens */
-    --gradient-ukraine: linear-gradient(135deg, hsl(210 100% 36%), hsl(210 100% 45%));
+    --gradient-ukraine: linear-gradient(135deg, hsl(210 100% 36%), hsl(0 0% 100%), hsl(51 100% 50%));
+    --gradient-ukraine-subtle: linear-gradient(135deg, hsl(210 100% 36% / 0.1), hsl(0 0% 100%), hsl(51 100% 50% / 0.1));
+    --gradient-ukraine-icon: linear-gradient(135deg, hsl(210 100% 45%), hsl(0 0% 98%), hsl(51 100% 55%));
     --shadow-soft: 0 4px 20px -4px hsl(210 100% 36% / 0.1);
     --shadow-medium: 0 8px 30px -6px hsl(210 100% 36% / 0.15);
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);

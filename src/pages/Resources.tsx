@@ -107,7 +107,7 @@ const Resources = () => {
       <div className="min-h-screen bg-background">
         <Navigation />
         <div className="container mx-auto px-4 py-16 max-w-2xl text-center">
-          <div className="bg-gradient-to-br from-primary/10 to-accent/10 rounded-2xl p-12 border border-primary/20">
+          <div className="rounded-2xl p-12 border border-primary/20" style={{ background: 'linear-gradient(135deg, hsl(210 100% 36% / 0.1), hsl(0 0% 100%), hsl(51 100% 50% / 0.1))' }}>
             <AlertTriangle className="h-16 w-16 text-accent mx-auto mb-6" />
             <h1 className="text-3xl font-bold text-foreground mb-4">
               Complete Your Assessment First
@@ -172,12 +172,12 @@ const Resources = () => {
           </div>
           
           {/* Hero Card */}
-          <Card className="bg-gradient-to-br from-primary/10 via-accent/5 to-primary/10 rounded-2xl p-8 border-2 border-primary/20 relative overflow-hidden">
+          <Card className="rounded-2xl p-8 border-2 border-primary/20 relative overflow-hidden" style={{ background: 'linear-gradient(135deg, hsl(210 100% 36% / 0.1), hsl(0 0% 100%), hsl(51 100% 50% / 0.1))' }}>
             <div className="absolute top-0 right-0 w-40 h-40 bg-accent/20 rounded-full blur-3xl" />
             <div className="absolute bottom-0 left-0 w-40 h-40 bg-primary/20 rounded-full blur-3xl" />
             
             <div className="flex items-start gap-4 relative z-10">
-              <div className="bg-gradient-to-br from-primary to-accent rounded-full p-4 shrink-0 shadow-xl">
+              <div className="rounded-full p-4 shrink-0 shadow-xl" style={{ background: 'linear-gradient(135deg, hsl(210 100% 45%), hsl(0 0% 98%), hsl(51 100% 55%))' }}>
                 <CheckCircle2 className="h-8 w-8 text-primary-foreground" />
               </div>
               <div className="flex-1">
@@ -234,7 +234,7 @@ const Resources = () => {
 
         {/* Final CTA */}
         <div className="mt-16">
-          <Card className="bg-gradient-to-br from-accent/10 via-primary/10 to-accent/10 rounded-2xl p-8 border-2 border-accent shadow-2xl">
+          <Card className="rounded-2xl p-8 border-2 border-accent shadow-2xl" style={{ background: 'linear-gradient(135deg, hsl(210 100% 36% / 0.1), hsl(0 0% 100%), hsl(51 100% 50% / 0.1))' }}>
             <div className="text-center">
               <h2 className="text-2xl font-bold text-foreground mb-4">
                 Need Help Getting Started?

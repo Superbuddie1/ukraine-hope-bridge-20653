@@ -56,10 +56,10 @@ const Index = () => {
       
       {/* Hero Section - Fullscreen */}
       <section className="flex-1 relative overflow-hidden flex items-center justify-center py-8 md:py-0">
-        {/* Background gradient with subtle pulse */}
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-background to-accent/5" />
+        {/* Background gradient - Blue to White to Yellow */}
+        <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, hsl(210 100% 36% / 0.08), hsl(0 0% 100%), hsl(51 100% 50% / 0.08))' }} />
         
-        {/* Ambient blue glow orbs */}
+        {/* Ambient glow orbs */}
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl animate-pulse-glow" />
         <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-accent/10 rounded-full blur-3xl animate-pulse-glow" style={{ animationDelay: '1.5s' }} />
         
