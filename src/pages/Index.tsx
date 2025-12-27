@@ -101,7 +101,7 @@ const Index = () => {
       {/* Footer - Minimal at bottom */}
       <footer className="border-t border-border py-3 md:py-4 bg-secondary/20">
         <div className="container mx-auto px-4 text-center text-muted-foreground">
-          <p className="text-sm">© 2025 Ukraine Prosthetic Aid. Supporting Ukraine's heroes.</p>
+          <p className="text-sm">© 2025 Prosthemap. Supporting Ukraine's heroes.</p>
         </div>
       </footer>
     </div>
