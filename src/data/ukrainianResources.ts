@@ -579,91 +579,11 @@ export const prostheticCenters: Resource[] = [
   },
 ];
 
-// Hospitals - major medical facilities
-export const hospitals: Resource[] = [
-  {
-    id: 'hosp-1',
-    title: 'National Military Medical Clinical Center (Kyiv)',
-    titleUa: 'Національний військово-медичний клінічний центр',
-    description: 'Primary military hospital with advanced prosthetic fitting, rehabilitation, and surgical capabilities.',
-    contact: '+380 44 521 8888',
-    address: 'Kyiv, Hospitalna St. 18',
-    website: 'https://gvkg.com.ua',
-    type: 'hospital',
-    tags: ['military', 'surgery', 'prosthetics', 'kyiv'],
-    region: 'kyiv',
-  },
-  {
-    id: 'hosp-2',
-    title: 'Lviv Regional Clinical Hospital',
-    titleUa: 'Львівська обласна клінічна лікарня',
-    description: 'Major regional hospital with dedicated rehabilitation department and prosthetic services.',
-    contact: '+380 32 270 7777',
-    address: 'Lviv, Chervonoi Kalyny Ave. 35',
-    type: 'hospital',
-    tags: ['regional', 'rehabilitation', 'lviv'],
-    region: 'lviv',
-  },
-  {
-    id: 'hosp-3',
-    title: 'Dnipro Military Hospital',
-    titleUa: 'Дніпровський військовий госпіталь',
-    description: 'Major military medical facility serving the eastern region with prosthetic and rehabilitation services.',
-    contact: '+380 56 777 8888',
-    address: 'Dnipro, Soborna Sq. 12',
-    type: 'hospital',
-    tags: ['military', 'surgery', 'dnipro'],
-    region: 'dnipropetrovsk',
-  },
-  {
-    id: 'hosp-4',
-    title: 'Vinnytsia Regional Hospital - Rehabilitation Unit',
-    titleUa: 'Вінницька обласна лікарня - Реабілітаційне відділення',
-    description: 'Regional hospital with dedicated rehabilitation services for amputees.',
-    contact: '+380 43 255 6789',
-    address: 'Vinnytsia, Pirogova St. 46',
-    type: 'hospital',
-    tags: ['regional', 'rehabilitation', 'vinnytsia'],
-    region: 'vinnytsia',
-  },
-];
+// Hospitals - empty, only scraped prosthetic centers are included
+export const hospitals: Resource[] = [];
 
-// Rehabilitation Centers
-export const rehabCenters: Resource[] = [
-  {
-    id: 'rehab-1',
-    title: 'Unbroken National Rehabilitation Center',
-    titleUa: 'Національний реабілітаційний центр Незламні',
-    description: 'Comprehensive rehabilitation for war veterans including physical therapy, prosthetic training, and psychological support.',
-    contact: '+380 44 000 0000',
-    website: 'https://unbroken.ua',
-    type: 'rehab',
-    tags: ['veterans', 'rehabilitation', 'comprehensive'],
-    region: 'kyiv',
-  },
-  {
-    id: 'rehab-2',
-    title: 'Kharkiv Institute of Medical Rehabilitation',
-    titleUa: 'Харківський інститут медичної реабілітації',
-    description: 'Specialized rehabilitation facility with expertise in post-amputation care and prosthetic training.',
-    contact: '+380 57 700 5555',
-    address: 'Kharkiv, Nauky Ave. 4',
-    type: 'rehab',
-    tags: ['rehabilitation', 'training', 'kharkiv'],
-    region: 'kharkiv',
-  },
-  {
-    id: 'rehab-3',
-    title: 'Odesa Regional Rehabilitation Center',
-    titleUa: 'Одеський обласний реабілітаційний центр',
-    description: 'Comprehensive rehabilitation services for amputees in the southern region.',
-    contact: '+380 48 700 1234',
-    address: 'Odesa, Preobrazhenska St. 15',
-    type: 'rehab',
-    tags: ['rehabilitation', 'regional', 'odesa'],
-    region: 'odesa',
-  },
-];
+// Rehabilitation Centers - empty, only scraped prosthetic centers are included
+export const rehabCenters: Resource[] = [];
 
 // NGOs and International Funding Sources
 export const ngoResources: Resource[] = [
