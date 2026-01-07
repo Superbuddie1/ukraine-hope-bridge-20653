@@ -512,17 +512,6 @@ export function generatePersonalizedRoadmap(data: AssessmentData): PersonalizedR
     recommendations: getFilteredResources(allResources.medicalFacilities, data, 'medical').slice(0, 4),
   });
   
-  // Section 3: Prosthetic Manufacturers (if relevant)
-  if (['pre-prosthetic', 'prosthetic-fitting', 'prosthetic-training', 'community-reintegration'].includes(data.currentStage)) {
-    sections.push({
-      id: 'prosthetics',
-      title: 'Prosthetic Manufacturers',
-      titleUa: 'Виробники протезів',
-      icon: 'Cog',
-      urgency: data.currentStage === 'prosthetic-fitting' ? 'immediate' : 'soon',
-      recommendations: getFilteredResources(allResources.manufacturers, data, 'prosthetics').slice(0, 4),
-    });
-  }
   
   // Section 4: Support Services (including veteran-specific)
   sections.push({

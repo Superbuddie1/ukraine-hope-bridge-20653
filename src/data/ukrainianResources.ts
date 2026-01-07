@@ -648,56 +648,6 @@ export const ngoResources: Resource[] = [
   },
 ];
 
-// Prosthetic Manufacturers Active in Ukraine
-export const manufacturers: Resource[] = [
-  {
-    id: 'mfg-1',
-    title: 'Ottobock Ukraine',
-    titleUa: 'Ottobock Україна',
-    description: 'World-leading prosthetics manufacturer with service centers in Ukraine, offering advanced microprocessor-controlled limbs.',
-    contact: '+380 44 333 4444',
-    website: 'https://www.ottobock.com/uk-ua',
-    type: 'manufacturer',
-    tags: ['german', 'advanced', 'microprocessor'],
-  },
-  {
-    id: 'mfg-2',
-    title: 'Össur Ukraine Partner',
-    titleUa: 'Össur Партнер Україна',
-    description: 'Icelandic prosthetics company providing bionic limbs and running blades through Ukrainian partners.',
-    website: 'https://www.ossur.com',
-    type: 'manufacturer',
-    tags: ['icelandic', 'bionic', 'sports'],
-  },
-  {
-    id: 'mfg-3',
-    title: 'Ukrainian Prosthetic Enterprise (UPE)',
-    titleUa: 'Українське протезне підприємство',
-    description: 'State-owned prosthetic manufacturer producing affordable prosthetics covered by government programs.',
-    contact: '+380 44 555 6666',
-    address: 'Kyiv, Industrialna St. 20',
-    type: 'manufacturer',
-    tags: ['state-owned', 'affordable', 'government-covered'],
-  },
-  {
-    id: 'mfg-4',
-    title: 'Motorica Ukraine',
-    titleUa: 'Моторика Україна',
-    description: 'Innovative bionic hand prosthetics with customizable designs and advanced functionality.',
-    website: 'https://motorica.org',
-    type: 'manufacturer',
-    tags: ['bionic', 'hands', 'innovative'],
-  },
-  {
-    id: 'mfg-5',
-    title: 'Esper Bionics',
-    titleUa: 'Esper Bionics',
-    description: 'Ukrainian startup creating AI-powered bionic arms with intuitive control systems.',
-    website: 'https://esperbionics.com',
-    type: 'manufacturer',
-    tags: ['ukrainian', 'ai', 'bionic-arm', 'startup'],
-  },
-];
 
 // Financial Aid & Veteran Support
 export const financialAid: Resource[] = [
@@ -784,7 +734,6 @@ export const allResources = {
   rehabCenters,
   medicalFacilities,
   ngoResources,
-  manufacturers,
   financialAid,
   supportServices,
 };
