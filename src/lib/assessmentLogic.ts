@@ -513,11 +513,11 @@ export function generatePersonalizedRoadmap(data: AssessmentData): PersonalizedR
   });
   
   
-  // Section 4: Support Services (including veteran-specific)
+  // Section 4: Community Support in Your Area
   sections.push({
     id: 'support',
-    title: data.status === 'military' ? 'Veteran & Support Services' : 'Support & Community',
-    titleUa: data.status === 'military' ? 'Ветеранські та підтримуючі служби' : 'Підтримка та спільнота',
+    title: 'Community Support in Your Area',
+    titleUa: 'Громадська підтримка у вашому регіоні',
     icon: 'Users',
     urgency: 'ongoing',
     recommendations: getFilteredResources(allResources.supportServices, data, 'support').slice(0, 4),
