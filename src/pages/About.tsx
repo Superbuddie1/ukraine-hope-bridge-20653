@@ -15,12 +15,7 @@ const About = () => {
             About This Project
           </h1>
           <p className="text-lg text-muted-foreground leading-relaxed">
-            This project began with a simple observation: thousands of Ukrainian amputees face a fragmented, 
-            overwhelming landscape of resources, funding pathways, and rehabilitation options. Most of the 
-            information exists — scattered across government portals, NGO websites, and clinical networks — 
-            but accessing it requires time, language fluency, and institutional knowledge that many people 
-            simply don't have during the most difficult period of their lives. We wanted to build something 
-            that could help bridge that gap.
+            We began this project with a simple thought, that thousands of amputees in Ukraine have to face a fragmented and overwhelming mass of resources to achieve funding and rehabilitation. The information does exist scattered across government portals, NGO websites, and clinical networks, however accessing it requires a lot of time, language fluency, and institutional knowledge which most can't obtain. This project is something that helps bridge the gap.
           </p>
         </section>
 
@@ -50,22 +45,10 @@ const About = () => {
           </p>
           
           <p className="text-muted-foreground leading-relaxed mb-4">
-            We're two computer science students who started this project not because we had any special 
-            expertise in prosthetics or rehabilitation medicine — we didn't — but because we saw a clear, 
-            tractable problem and believed our technical skills could be useful.
-          </p>
-          <p className="text-muted-foreground leading-relaxed mb-4">
-            Our background is in building things: writing code, designing systems, learning how to break 
-            down complex problems into manageable pieces. This project has pushed us far beyond that. 
-            We've spent months reading clinical literature, speaking with prosthetists and rehabilitation 
-            specialists, and learning the bureaucratic realities of healthcare access in Ukraine. The 
-            technical work — the website, the assessment tool, the resource database — is only a small 
-            part of what we've had to understand.
+            Although we don't have special expertise in prosthetics, we knew our technical skills would suffice. We have a background in building projects: programming, designing systems, precise planning, troubleshooting, and teamwork. This project is what pushed us to use these skills to the max, while ensuring our goals align with the Protez Foundation.
           </p>
           <p className="text-muted-foreground leading-relaxed">
-            We don't pretend to have all the answers. What we do have is a willingness to keep learning, 
-            to listen carefully to the people who know more than we do, and to build tools that might 
-            actually be useful.
+            We don't pretend to have all the answers. What we do is fully commit to learning to those who know more than we do, and build tools that actually end up being useful.
           </p>
         </section>
 
