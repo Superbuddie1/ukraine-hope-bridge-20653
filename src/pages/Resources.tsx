@@ -5,7 +5,7 @@ import Navigation from "@/components/Navigation";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import RoadmapSectionComponent from "@/components/RoadmapSection";
-import ProstheticOptions from "@/components/ProstheticOptions";
+
 import ExportPDF from "@/components/ExportPDF";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
@@ -243,15 +243,6 @@ const Resources = () => {
           </div>
         </motion.div>
 
-        {/* Prosthetic Options */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="mb-12"
-        >
-          <ProstheticOptions options={roadmap.prostheticOptions} />
-        </motion.div>
 
         {/* Section Header */}
         <motion.div 
