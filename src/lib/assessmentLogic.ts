@@ -10,6 +10,7 @@ export interface PersonalizedRecommendation {
   reason: string;
   timeframe: string;
   regionMatch?: 'exact' | 'nearby' | 'other';
+  treatmentMatch?: boolean;
 }
 
 export interface RoadmapStep {
@@ -349,19 +350,48 @@ function getRegionMatch(resourceRegion: string | undefined, userRegion: string):
   return 'other';
 }
 
-// Filter resources for recommendations with region prioritization
+// Determine required treatment capability based on assessment data
+function getRequiredCapability(data: AssessmentData): string | null {
+  if (!data.amputationType || !data.amputationLevel) return null;
+  
+  // Check for multiple limbs (would need additional field, for now assume single)
+  const isLowerLimb = data.amputationType === 'lower-limb';
+  const isUpperLimb = data.amputationType === 'upper-limb';
+  
+  // Complex cases that might have complications
+  const complexLevels = ['hip-disarticulation', 'shoulder-disarticulation'];
+  const hasComplications = complexLevels.includes(data.amputationLevel);
+  
+  if (hasComplications) return 'with-complications';
+  if (isLowerLimb) return 'single-lower-limb';
+  if (isUpperLimb) return 'single-upper-limb';
+  
+  return null;
+}
+
+// Check if a resource can handle the required treatment
+function canHandleTreatment(resource: Resource, requiredCapability: string | null): boolean {
+  if (!requiredCapability) return true; // No specific requirement
+  if (!resource.capabilities || resource.capabilities.length === 0) return true; // No capability info, assume yes
+  
+  return resource.capabilities.includes(requiredCapability);
+}
+
+// Filter resources for recommendations with region AND treatment relevance prioritization
 function getFilteredResources(
   resources: Resource[],
   data: AssessmentData,
   category: string
 ): PersonalizedRecommendation[] {
   const recommendations: PersonalizedRecommendation[] = [];
+  const requiredCapability = getRequiredCapability(data);
   
   resources.forEach(resource => {
     let priority: 'critical' | 'high' | 'medium' | 'low' = 'medium';
     let reason = '';
     let timeframe = 'Within 1 month';
     const regionMatch = getRegionMatch(resource.region, data.region);
+    const treatmentMatch = canHandleTreatment(resource, requiredCapability);
     
     switch (category) {
       case 'medical':
@@ -373,8 +403,8 @@ function getFilteredResources(
           timeframe = '';
         }
         
-        // Note region match
-        if (regionMatch === 'exact') {
+        // Boost priority for matching region AND treatment capability
+        if (regionMatch === 'exact' && treatmentMatch) {
           if (priority === 'medium') priority = 'high';
         }
         break;
@@ -414,15 +444,29 @@ function getFilteredResources(
       reason,
       timeframe,
       regionMatch,
+      treatmentMatch,
     });
   });
   
-  // Sort by region match first, then by priority
+  // Sort by: 1) In-region with treatment match, 2) In-region without match, 3) Other regions with match, 4) Other regions without match
   const priorityOrder = { critical: 0, high: 1, medium: 2, low: 3 };
   const regionOrder = { exact: 0, nearby: 1, other: 2 };
   
   return recommendations.sort((a, b) => {
-    // First sort by region match
+    const aTreatmentMatch = a.treatmentMatch !== false;
+    const bTreatmentMatch = b.treatmentMatch !== false;
+    const aInRegion = (a.regionMatch === 'exact' || a.regionMatch === 'nearby');
+    const bInRegion = (b.regionMatch === 'exact' || b.regionMatch === 'nearby');
+    
+    // Priority 1: In-region facilities that can handle the treatment come first
+    if (aInRegion && aTreatmentMatch && !(bInRegion && bTreatmentMatch)) return -1;
+    if (bInRegion && bTreatmentMatch && !(aInRegion && aTreatmentMatch)) return 1;
+    
+    // Priority 2: If no in-region facilities match treatment, show other regions that CAN handle treatment
+    if (!aInRegion && aTreatmentMatch && !bTreatmentMatch) return -1;
+    if (!bInRegion && bTreatmentMatch && !aTreatmentMatch) return 1;
+    
+    // Within same category, sort by region proximity
     const regionDiff = regionOrder[a.regionMatch || 'other'] - regionOrder[b.regionMatch || 'other'];
     if (regionDiff !== 0) return regionDiff;
     
