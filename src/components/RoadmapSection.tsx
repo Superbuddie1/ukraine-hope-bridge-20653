@@ -2,7 +2,6 @@ import { RoadmapSection as RoadmapSectionType } from "@/lib/assessmentLogic";
 import RoadmapCard from "./RoadmapCard";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { 
   AlertTriangle, 
   Wallet, 
@@ -32,12 +31,6 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
 const RoadmapSectionComponent = ({ section, index }: RoadmapSectionProps) => {
   const isEven = index % 2 === 0;
   const Icon = iconMap[section.icon] || MapPin;
-  
-  const urgencyBadge = {
-    immediate: { label: 'Do Now', className: 'bg-destructive/10 text-destructive border-destructive/20' },
-    soon: { label: 'This Week', className: 'bg-accent/20 text-accent-foreground border-accent/30' },
-    ongoing: { label: 'Ongoing', className: 'bg-muted text-muted-foreground border-border' },
-  };
 
   return (
     <div className="relative">
@@ -75,9 +68,6 @@ const RoadmapSectionComponent = ({ section, index }: RoadmapSectionProps) => {
                   <p className="text-sm text-muted-foreground/70 italic mt-1">{section.titleUa}</p>
                 )}
               </div>
-              <Badge variant="outline" className={`shrink-0 text-xs font-medium ${urgencyBadge[section.urgency].className}`}>
-                {urgencyBadge[section.urgency].label}
-              </Badge>
             </div>
           </div>
 

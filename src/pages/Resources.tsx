@@ -15,8 +15,6 @@ import {
   AlertTriangle,
   Clock,
   Sparkles,
-  Phone,
-  Download,
   MapPin
 } from "lucide-react";
 import { PersonalizedRoadmap, generatePersonalizedRoadmap } from "@/lib/assessmentLogic";
@@ -228,27 +226,17 @@ const Resources = () => {
                 </div>
               </div>
               
-              {/* Quick stats */}
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8 pt-8 border-t border-border/50">
+              {/* Quick stats - simplified */}
+              <div className="grid grid-cols-2 gap-4 mt-8 pt-8 border-t border-border/50">
                 <div className="text-center">
                   <div className="text-2xl md:text-3xl font-bold text-primary">{roadmap.sections.length}</div>
-                  <div className="text-xs md:text-sm text-muted-foreground">Steps to Complete</div>
+                  <div className="text-xs md:text-sm text-muted-foreground">Sections</div>
                 </div>
                 <div className="text-center">
                   <div className="text-2xl md:text-3xl font-bold text-primary">
                     {roadmap.sections.reduce((acc, s) => acc + s.recommendations.length, 0)}
                   </div>
                   <div className="text-xs md:text-sm text-muted-foreground">Resources Available</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl md:text-3xl font-bold text-accent">
-                    {roadmap.sections.filter(s => s.urgency === 'immediate').length}
-                  </div>
-                  <div className="text-xs md:text-sm text-muted-foreground">Priority Actions</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-lg md:text-xl font-bold text-foreground">{roadmap.estimatedTimeline}</div>
-                  <div className="text-xs md:text-sm text-muted-foreground">Estimated Timeline</div>
                 </div>
               </div>
             </div>
@@ -262,10 +250,7 @@ const Resources = () => {
           transition={{ delay: 0.2 }}
           className="mb-12"
         >
-          <ProstheticOptions 
-            options={roadmap.prostheticOptions} 
-            timeline={roadmap.estimatedTimeline} 
-          />
+          <ProstheticOptions options={roadmap.prostheticOptions} />
         </motion.div>
 
         {/* Section Header */}
@@ -281,8 +266,8 @@ const Resources = () => {
 
         {/* Roadmap Steps */}
         <div className="relative">
-          {/* Central vertical line - Desktop */}
-          <div className="absolute left-1/2 top-8 bottom-8 w-0.5 hidden md:block transform -translate-x-1/2 bg-gradient-to-b from-primary via-accent to-primary" />
+          {/* Central vertical line - Desktop - Blue to Black to Yellow gradient */}
+          <div className="absolute left-1/2 top-8 bottom-8 w-0.5 hidden md:block transform -translate-x-1/2 bg-gradient-to-b from-primary via-foreground to-accent" />
           
           <div className="space-y-8 md:space-y-12">
             {roadmap.sections.map((section, idx) => (
@@ -301,39 +286,14 @@ const Resources = () => {
           </div>
         </div>
 
-        {/* Final CTA */}
+        {/* PDF Export CTA */}
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.8 }}
-          className="mt-16 mb-8"
+          className="mt-16 mb-8 flex justify-center"
         >
-          <div className="relative bg-gradient-to-r from-primary/10 via-card to-accent/10 rounded-3xl border border-border/50 p-8 md:p-10 overflow-hidden">
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-accent/5 via-transparent to-primary/5" />
-            
-            <div className="relative z-10 text-center max-w-2xl mx-auto">
-              <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-primary/10 mb-6">
-                <Phone className="h-6 w-6 text-primary" />
-              </div>
-              <h2 className="text-xl md:text-2xl font-bold text-foreground mb-3">
-                Need Help Getting Started?
-              </h2>
-              <p className="text-muted-foreground mb-8">
-                Our support team is available 24/7 to guide you through the process. 
-                Don't navigate this journey alone.
-              </p>
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-                <Button size="lg" className="gap-2 px-6 w-full sm:w-auto">
-                  <Phone className="h-4 w-4" />
-                  +380 800 500 335
-                </Button>
-                <Button variant="outline" size="lg" className="gap-2 px-6 w-full sm:w-auto">
-                  <Download className="h-4 w-4" />
-                  Save Roadmap as PDF
-                </Button>
-              </div>
-            </div>
-          </div>
+          <ExportPDF roadmap={roadmap} />
         </motion.div>
       </div>
     </div>
