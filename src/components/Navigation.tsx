@@ -31,7 +31,7 @@ const Navigation = () => {
             <img 
               src={logo} 
               alt="Ukraine Prosthetic Assistance Logo" 
-              className="h-14 w-auto group-hover:scale-110 transition-transform"
+              className="h-20 w-auto group-hover:scale-110 transition-transform"
             />
             <span className="text-xl font-bold text-foreground hidden sm:inline">Prosthemap</span>
           </Link>
