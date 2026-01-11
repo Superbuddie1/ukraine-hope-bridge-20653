@@ -42,40 +42,41 @@ export interface PersonalizedRoadmap {
 }
 
 // Get prosthetic options based on amputation type and level
+// Note: These are general categories to discuss with healthcare providers, not medical recommendations
 function getProstheticOptions(data: AssessmentData): string[] {
   const options: string[] = [];
   
   if (data.amputationType === 'upper-limb') {
     switch (data.amputationLevel) {
       case 'shoulder-disarticulation':
-        options.push('Shoulder prosthesis', 'Cosmetic shoulder cover', 'Body-powered shoulder prosthesis');
+        options.push('Shoulder-level prosthetics', 'Body-powered options', 'Cosmetic options');
         break;
       case 'above-elbow':
-        options.push('Myoelectric above-elbow prosthesis', 'Body-powered prosthesis', 'Hybrid prosthesis', 'Bionic arm');
+        options.push('Myoelectric prosthetics', 'Body-powered prosthetics', 'Hybrid options');
         break;
       case 'below-elbow':
-        options.push('Myoelectric below-elbow prosthesis', 'Body-powered prosthesis', 'Activity-specific prosthesis');
+        options.push('Myoelectric prosthetics', 'Body-powered prosthetics', 'Activity-specific devices');
         break;
       case 'wrist':
-        options.push('Wrist disarticulation prosthesis', 'Myoelectric hand', 'Cosmetic hand');
+        options.push('Wrist-level prosthetics', 'Myoelectric hands', 'Cosmetic options');
         break;
       case 'fingers':
-        options.push('Silicone finger prosthetics', 'Functional finger prosthetics', 'Cosmetic restoration');
+        options.push('Finger prosthetics', 'Functional options', 'Cosmetic restoration');
         break;
     }
   } else if (data.amputationType === 'lower-limb') {
     switch (data.amputationLevel) {
       case 'hip-disarticulation':
-        options.push('Hip disarticulation prosthesis', 'Canadian hip prosthesis', 'Modular hip system');
+        // Don't provide specific prosthetic recommendations for complex cases
         break;
       case 'above-knee':
-        options.push('Above-knee prosthesis (AK)', 'Microprocessor knee (C-Leg)', 'Sports prosthesis');
+        options.push('Above-knee prosthetics', 'Microprocessor knees', 'Sports-specific options');
         break;
       case 'below-knee':
-        options.push('Below-knee prosthesis (BK)', 'Running blade', 'Waterproof prosthesis');
+        options.push('Below-knee prosthetics', 'Sports blades', 'Waterproof options');
         break;
       case 'partial-foot':
-        options.push('Partial foot prosthesis', 'Toe filler', 'Custom orthotic insole');
+        options.push('Partial foot prosthetics', 'Custom orthotic insoles');
         break;
     }
   }
@@ -366,55 +367,44 @@ function getFilteredResources(
       case 'medical':
         if (data.currentStage === 'acute-post-surgical' || data.currentStage === 'in-patient-post-surgical') {
           priority = 'critical';
-          reason = 'Essential for your current recovery stage';
-          timeframe = 'This week';
+          timeframe = '';
         } else if (data.currentStage === 'rehabilitation' || data.currentStage === 'pre-prosthetic') {
           priority = 'high';
-          reason = 'Important for continued recovery';
-          timeframe = 'Within 2 weeks';
+          timeframe = '';
         }
         
-        // Boost priority based on region match
+        // Note region match
         if (regionMatch === 'exact') {
-          reason = `In your region - ${reason}`;
           if (priority === 'medium') priority = 'high';
-        } else if (regionMatch === 'nearby') {
-          reason = `Nearby region - ${reason}`;
         }
         break;
         
       case 'prosthetics':
         if (data.currentStage === 'prosthetic-fitting' || data.currentStage === 'prosthetic-training') {
           priority = 'high';
-          reason = 'Relevant to your current prosthetic journey';
-          timeframe = 'Schedule now';
+          timeframe = '';
         } else if (data.currentStage === 'pre-prosthetic') {
           priority = 'medium';
-          reason = 'Begin researching options';
-          timeframe = 'Within 1-2 months';
+          timeframe = '';
         } else {
           priority = 'low';
-          reason = 'For future reference';
-          timeframe = 'When ready';
+          timeframe = '';
         }
         break;
         
       case 'support':
         if (data.status === 'military') {
           priority = 'high';
-          reason = 'Veteran-specific support available';
-          timeframe = 'Connect this week';
+          timeframe = '';
         } else {
           priority = 'medium';
-          reason = 'Community support resources';
-          timeframe = 'Ongoing';
+          timeframe = '';
         }
         break;
         
       case 'ngo':
         priority = 'medium';
-        reason = 'Additional support and funding opportunities';
-        timeframe = 'As needed';
+        timeframe = '';
         break;
     }
     
