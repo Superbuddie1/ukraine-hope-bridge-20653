@@ -1,5 +1,7 @@
 import Navigation from "@/components/Navigation";
 import { Compass, Users, BookOpen, Shield } from "lucide-react";
+import harleyPhoto from "@/assets/harley.jpeg";
+import victorPhoto from "@/assets/victor.jpeg";
 
 const About = () => {
   return (
@@ -24,7 +26,29 @@ const About = () => {
 
         {/* Founders */}
         <section className="mb-16">
-          <h2 className="text-2xl font-semibold text-foreground mb-4">Who We Are</h2>
+          <h2 className="text-2xl font-semibold text-foreground mb-6">Who We Are</h2>
+          
+          {/* Founder Photos */}
+          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-6">
+            <div className="w-40 h-40 rounded-full overflow-hidden border-2 border-border">
+              <img 
+                src={harleyPhoto} 
+                alt="Harley Thorpe" 
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <div className="w-40 h-40 rounded-full overflow-hidden border-2 border-border">
+              <img 
+                src={victorPhoto} 
+                alt="Victor Pivtoran" 
+                className="w-full h-full object-cover"
+              />
+            </div>
+          </div>
+          <p className="text-center text-sm text-muted-foreground italic mb-8">
+            Harley Thorpe and Victor Pivtoran, two Computer Science students at Western University devoted to make a positive impact.
+          </p>
+          
           <p className="text-muted-foreground leading-relaxed mb-4">
             We're two computer science students who started this project not because we had any special 
             expertise in prosthetics or rehabilitation medicine — we didn't — but because we saw a clear, 
