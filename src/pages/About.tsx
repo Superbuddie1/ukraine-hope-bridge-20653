@@ -1,5 +1,5 @@
 import Navigation from "@/components/Navigation";
-import { Compass, Users, BookOpen, Shield } from "lucide-react";
+import { Heart, Shield, BookOpen } from "lucide-react";
 import harleyPhoto from "@/assets/harley.jpeg";
 import victorPhoto from "@/assets/victor.jpeg";
 
@@ -58,28 +58,24 @@ const About = () => {
           <div className="grid gap-6">
             <div className="flex items-start gap-4">
               <div className="bg-primary/10 rounded-full p-3 shrink-0">
-                <Shield className="h-5 w-5 text-primary" />
+                <Heart className="h-5 w-5 text-primary" />
               </div>
               <div>
-                <h3 className="font-semibold text-foreground mb-1">Responsibility</h3>
+                <h3 className="font-semibold text-foreground mb-1">Contribution</h3>
                 <p className="text-muted-foreground text-sm leading-relaxed">
-                  Technical skills come with obligations. When you build something that people rely on, 
-                  especially vulnerable people, you take on a duty to get things right — to be accurate, 
-                  to be careful, to think through consequences.
+                  We aim to work on things bigger than ourselves, to really make a positive impact on the world. Just because we are students doesn't mean we can have a big influence.
                 </p>
               </div>
             </div>
 
             <div className="flex items-start gap-4">
               <div className="bg-primary/10 rounded-full p-3 shrink-0">
-                <Compass className="h-5 w-5 text-primary" />
+                <Shield className="h-5 w-5 text-primary" />
               </div>
               <div>
-                <h3 className="font-semibold text-foreground mb-1">Transparency</h3>
+                <h3 className="font-semibold text-foreground mb-1">Responsibility</h3>
                 <p className="text-muted-foreground text-sm leading-relaxed">
-                  We are students, not medical professionals. This platform provides information and 
-                  guidance, not clinical advice. We try to be clear about what we know, what we don't, 
-                  and where our information comes from.
+                  A project like this comes with obligations. We understand that this is something that people will rely on, especially those who are vulnerable. It is our duty to get things right in this project - to be accurate, effective, and careful.
                 </p>
               </div>
             </div>
@@ -91,23 +87,7 @@ const About = () => {
               <div>
                 <h3 className="font-semibold text-foreground mb-1">Learning</h3>
                 <p className="text-muted-foreground text-sm leading-relaxed">
-                  This project is built on the assumption that we will always have more to learn. Every 
-                  conversation with a clinician, every piece of user feedback, every failed approach 
-                  teaches us something. We try to build that humility into how we work.
-                </p>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-4">
-              <div className="bg-primary/10 rounded-full p-3 shrink-0">
-                <Users className="h-5 w-5 text-primary" />
-              </div>
-              <div>
-                <h3 className="font-semibold text-foreground mb-1">Respect</h3>
-                <p className="text-muted-foreground text-sm leading-relaxed">
-                  The communities and experts who have been working on these problems for years know 
-                  far more than we do. Our role is to support their work, not to replace it — to build 
-                  tools that complement existing efforts, not compete with them.
+                  At the core, we wanted to take on this challenge of a project for the learning experience. Every failed approach at this website taught us something, and grew humility into how we work.
                 </p>
               </div>
             </div>
@@ -118,16 +98,10 @@ const About = () => {
         <section className="border-t border-border pt-12">
           <h2 className="text-2xl font-semibold text-foreground mb-4">Looking Forward</h2>
           <p className="text-muted-foreground leading-relaxed mb-4">
-            This is a long-term project. We expect to be working on it for years, not months. The 
-            platform will evolve as we learn more, as the situation in Ukraine changes, and as we 
-            receive feedback from the people who actually use it.
+            We plan to continue updating and improving this website for years on end, continuously providing the best results for those in need. The platform will evolve from situations in Ukraine changing and user feedback.
           </p>
           <p className="text-muted-foreground leading-relaxed">
-            If you're a clinician, rehabilitation specialist, or someone with lived experience who 
-            would like to contribute your expertise, we would be grateful to hear from you. If you're 
-            a researcher, developer, or designer interested in collaborating, we're open to that as 
-            well. And if you simply want to follow our progress, you're welcome to do so. We'll keep 
-            building.
+            If you're a clinician, rehabilitation specialist, or someone with lived experience who would like to contribute your expertise, we would be grateful to hear from you. If you're a researcher, developer, or designer interested in collaborating, we're open to that as well. And if you simply want to follow our progress, you're welcome to do so. We'll keep building.
           </p>
         </section>
       </div>
