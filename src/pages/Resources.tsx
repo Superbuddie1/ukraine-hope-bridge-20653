@@ -18,6 +18,10 @@ import {
   MapPin,
   Layers,
   BookOpen,
+  Shield,
+  Crosshair,
+  Activity,
+  FileText,
 } from "lucide-react";
 import { PersonalizedRoadmap, generatePersonalizedRoadmap } from "@/lib/assessmentLogic";
 import { AssessmentData } from "@/pages/Assessment";
@@ -111,6 +115,50 @@ const Resources = () => {
   const totalSteps = roadmap.sections.reduce((acc, s) => acc + (s.steps?.length || 0), 0);
   const isUk = language === 'uk';
 
+  const formatLabel = (value: string, type: 'status' | 'surgery' | 'limb' | 'stage') => {
+    const stageMap: Record<string, string> = {
+      'pre-surgical': t('assessment.preSurgical'),
+      'acute-post-surgical': t('assessment.acutePostSurgical'),
+      'in-patient-post-surgical': t('assessment.inPatientPostSurgical'),
+      'rehabilitation': t('assessment.rehabilitation'),
+      'pre-prosthetic': t('assessment.preProsthetic'),
+      'prosthetic-fitting': t('assessment.prostheticFitting'),
+      'prosthetic-training': t('assessment.prostheticTraining'),
+      'community-reintegration': t('assessment.communityReintegration'),
+    };
+    const levelMap: Record<string, string> = {
+      'shoulder-disarticulation': t('assessment.shoulderDisarticulation'),
+      'above-elbow': t('assessment.aboveElbow'),
+      'below-elbow': t('assessment.belowElbow'),
+      'wrist': t('assessment.wrist'),
+      'fingers': t('assessment.fingers'),
+      'hip-disarticulation': t('assessment.hipDisarticulation'),
+      'above-knee': t('assessment.aboveKnee'),
+      'below-knee': t('assessment.belowKnee'),
+      'partial-foot': t('assessment.partialFoot'),
+    };
+    if (type === 'status') return value === 'military' ? t('resources.militaryLabel') : t('resources.civilianLabel');
+    if (type === 'surgery') return value === 'planned' ? t('resources.plannedLabel') : t('resources.emergencyLabel');
+    if (type === 'limb') return value === 'upper-limb' ? t('resources.upperLimbLabel') : t('resources.lowerLimbLabel');
+    if (type === 'stage') return stageMap[value] || value;
+    return levelMap[value] || value;
+  };
+
+  const formatAmputationLevel = (value: string) => {
+    const levelMap: Record<string, string> = {
+      'shoulder-disarticulation': t('assessment.shoulderDisarticulation'),
+      'above-elbow': t('assessment.aboveElbow'),
+      'below-elbow': t('assessment.belowElbow'),
+      'wrist': t('assessment.wrist'),
+      'fingers': t('assessment.fingers'),
+      'hip-disarticulation': t('assessment.hipDisarticulation'),
+      'above-knee': t('assessment.aboveKnee'),
+      'below-knee': t('assessment.belowKnee'),
+      'partial-foot': t('assessment.partialFoot'),
+    };
+    return levelMap[value] || value;
+  };
+
   return (
     <div className="min-h-screen bg-secondary/30">
       <Navigation />
@@ -124,6 +172,50 @@ const Resources = () => {
             </Button>
           </Link>
           <ExportPDF roadmap={roadmap} />
+        </motion.div>
+
+        {/* Assessment Summary */}
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }} className="mb-10">
+          <div className="rounded-2xl border border-border/60 bg-card/80 backdrop-blur-sm overflow-hidden shadow-[var(--shadow-soft)]">
+            <div className="px-8 py-5 border-b border-border/40 flex items-center gap-3">
+              <div className="p-2 rounded-lg bg-primary/10">
+                <FileText className="h-4 w-4 text-primary" />
+              </div>
+              <h2 className="text-lg font-semibold text-foreground">{t('resources.yourAssessment')}</h2>
+            </div>
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 divide-x divide-y sm:divide-y-0 divide-border/30">
+              <SummaryItem
+                icon={Shield}
+                label={t('resources.status')}
+                value={formatLabel(assessmentData.status, 'status')}
+              />
+              <SummaryItem
+                icon={Activity}
+                label={t('resources.surgeryType')}
+                value={formatLabel(assessmentData.preSurgery || '—', 'surgery')}
+              />
+              <SummaryItem
+                icon={Crosshair}
+                label={t('resources.limbLocation')}
+                value={formatLabel(assessmentData.amputationType, 'limb')}
+              />
+              <SummaryItem
+                icon={Layers}
+                label={t('resources.amputationLevelLabel')}
+                value={formatAmputationLevel(assessmentData.amputationLevel)}
+              />
+              <SummaryItem
+                icon={Clock}
+                label={t('resources.currentStageLabel')}
+                value={formatLabel(assessmentData.currentStage, 'stage')}
+              />
+              <SummaryItem
+                icon={MapPin}
+                label={t('resources.regionLabel')}
+                value={assessmentData.region ? assessmentData.region.charAt(0).toUpperCase() + assessmentData.region.slice(1) : '—'}
+              />
+            </div>
+          </div>
         </motion.div>
 
         {/* Hero */}
@@ -213,6 +305,22 @@ const StatCard = ({ icon: Icon, label, value, color, className = '' }: StatCardP
       <div className="text-xl font-bold text-foreground">{value}</div>
       <div className="text-xs text-muted-foreground">{label}</div>
     </div>
+  </div>
+);
+
+interface SummaryItemProps {
+  icon: React.ComponentType<{ className?: string }>;
+  label: string;
+  value: string;
+}
+
+const SummaryItem = ({ icon: Icon, label, value }: SummaryItemProps) => (
+  <div className="flex flex-col items-center gap-2 px-4 py-5 text-center">
+    <div className="p-2 rounded-lg bg-primary/8">
+      <Icon className="h-4 w-4 text-primary" />
+    </div>
+    <span className="text-[11px] uppercase tracking-wider font-medium text-muted-foreground">{label}</span>
+    <span className="text-sm font-semibold text-foreground leading-tight">{value}</span>
   </div>
 );
 
