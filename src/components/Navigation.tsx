@@ -33,7 +33,7 @@ const Navigation = () => {
             <img
               src={logo}
               alt="Ukraine Prosthetic Assistance Logo"
-              className="h-20 w-auto group-hover:scale-110 transition-transform"
+              className="h-14 w-14 object-contain group-hover:scale-110 transition-transform"
             />
             <div className="hidden sm:flex flex-col leading-tight">
               <span className="text-xl font-bold text-foreground">Protez</span>
