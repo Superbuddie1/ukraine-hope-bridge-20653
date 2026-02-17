@@ -2,12 +2,14 @@ import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import Navigation from "@/components/Navigation";
 import { useAuth } from "@/hooks/useAuth";
+import { useLanguage } from "@/hooks/useLanguage";
 import { ArrowRight } from "lucide-react";
 import { useEffect, useState } from "react";
 
 const Index = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const { t } = useLanguage();
   const [showShine, setShowShine] = useState(true);
 
   useEffect(() => {
@@ -30,7 +32,7 @@ const Index = () => {
       {/* Shine Animation Overlay */}
       {showShine && (
         <div className="fixed inset-0 z-50 pointer-events-none overflow-hidden">
-          <div 
+          <div
             className="absolute inset-0 animate-shine-flow"
             style={{
               background: `linear-gradient(
@@ -53,55 +55,55 @@ const Index = () => {
       )}
 
       <Navigation />
-      
+
       {/* Hero Section - Fullscreen */}
       <section className="flex-1 relative overflow-hidden flex items-center justify-center py-8 md:py-0">
-        {/* Background gradient - Blue to White to Yellow */}
+        {/* Background gradient */}
         <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, hsl(210 100% 36% / 0.08), hsl(0 0% 100%), hsl(51 100% 50% / 0.08))' }} />
-        
+
         {/* Ambient glow orbs */}
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl animate-pulse-glow" />
         <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-accent/10 rounded-full blur-3xl animate-pulse-glow" style={{ animationDelay: '1.5s' }} />
-        
+
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-4xl mx-auto text-center space-y-4 md:space-y-8">
-            <h1 
+            <h1
               className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold text-foreground leading-tight opacity-0 animate-fade-in-up"
               style={{ animationDelay: '0.3s' }}
             >
-              Connecting Ukrainian Amputees with{" "}
-              <span className="text-primary">Essential Support</span>
+              {t('index.heroTitle1')}
+              <span className="text-primary">{t('index.heroTitle2')}</span>
             </h1>
-            
-            <p 
+
+            <p
               className="text-lg sm:text-xl md:text-2xl text-muted-foreground max-w-xl mx-auto opacity-0 animate-fade-in-up"
               style={{ animationDelay: '0.6s' }}
             >
-              Receive a curated roadmap to assist you throughout your prosthetic journey.
+              {t('index.heroSubtitle')}
             </p>
-            
-            <div 
+
+            <div
               className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center items-center pt-2 md:pt-4 pb-4 md:pb-0 opacity-0 animate-fade-in-up"
               style={{ animationDelay: '0.9s' }}
             >
               <Button variant="hero" size="lg" className="group" onClick={handleGetStarted}>
-                Get Started
+                {t('index.getStarted')}
                 <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
               </Button>
               <Link to="/about">
                 <Button variant="outline" size="lg">
-                  Learn More
+                  {t('index.learnMore')}
                 </Button>
               </Link>
             </div>
           </div>
         </div>
       </section>
-      
-      {/* Footer - Minimal at bottom */}
+
+      {/* Footer */}
       <footer className="border-t border-border py-3 md:py-4 bg-secondary/20">
         <div className="container mx-auto px-4 text-center text-muted-foreground">
-          <p className="text-sm">© 2025 Prosthemap. Supporting Ukraine's heroes.</p>
+          <p className="text-sm">{t('index.footer')}</p>
         </div>
       </footer>
     </div>

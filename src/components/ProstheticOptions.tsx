@@ -1,14 +1,16 @@
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Cog, Check, AlertCircle } from "lucide-react";
+import { useLanguage } from "@/hooks/useLanguage";
 
 interface ProstheticOptionsProps {
   options: string[];
 }
 
 const ProstheticOptions = ({ options }: ProstheticOptionsProps) => {
-  // Filter out specific medical advice options
-  const filteredOptions = options.filter(option => 
+  const { t } = useLanguage();
+
+  const filteredOptions = options.filter(option =>
     !option.toLowerCase().includes('hip disarticulation prosthesis') &&
     !option.toLowerCase().includes('canadian hip prosthesis') &&
     !option.toLowerCase().includes('modular hip system')
@@ -22,14 +24,10 @@ const ProstheticOptions = ({ options }: ProstheticOptionsProps) => {
             <Cog className="h-6 w-6 text-primary-foreground" />
           </div>
           <div className="flex-1">
-            <h3 className="text-xl font-bold text-foreground mb-2">
-              Prosthetic Options
-            </h3>
+            <h3 className="text-xl font-bold text-foreground mb-2">{t('prostheticOptions.title')}</h3>
             <div className="flex items-start gap-2 bg-accent/10 rounded-lg px-4 py-3 border border-accent/30">
               <AlertCircle className="h-5 w-5 text-accent shrink-0 mt-0.5" />
-              <p className="text-sm text-foreground">
-                Discuss prosthetic options with your healthcare provider and prosthetist. They will recommend suitable options based on your specific situation.
-              </p>
+              <p className="text-sm text-foreground">{t('prostheticOptions.consultMessage')}</p>
             </div>
           </div>
         </div>
@@ -44,31 +42,20 @@ const ProstheticOptions = ({ options }: ProstheticOptionsProps) => {
           <Cog className="h-6 w-6 text-primary-foreground" />
         </div>
         <div className="flex-1">
-          <h3 className="text-xl font-bold text-foreground mb-2">
-            Prosthetic Options to Discuss
-          </h3>
-          <p className="text-muted-foreground mb-4">
-            Based on your situation, you may want to discuss these options with your healthcare provider:
-          </p>
-          
+          <h3 className="text-xl font-bold text-foreground mb-2">{t('prostheticOptions.titleDiscuss')}</h3>
+          <p className="text-muted-foreground mb-4">{t('prostheticOptions.basedOnSituation')}</p>
+
           <div className="flex flex-wrap gap-2 mb-4">
             {filteredOptions.map((option, idx) => (
-              <Badge 
-                key={idx} 
-                variant="outline" 
-                className="px-3 py-1.5 bg-background/50 flex items-center gap-1.5"
-              >
-                <Check className="h-3 w-3 text-primary" />
-                {option}
+              <Badge key={idx} variant="outline" className="px-3 py-1.5 bg-background/50 flex items-center gap-1.5">
+                <Check className="h-3 w-3 text-primary" />{option}
               </Badge>
             ))}
           </div>
 
           <div className="flex items-start gap-2 bg-muted/50 rounded-lg px-4 py-3 border border-border/50">
             <AlertCircle className="h-4 w-4 text-muted-foreground shrink-0 mt-0.5" />
-            <p className="text-xs text-muted-foreground">
-              This is not medical advice. Always consult with qualified healthcare professionals before making decisions about prosthetics.
-            </p>
+            <p className="text-xs text-muted-foreground">{t('prostheticOptions.notMedicalAdvice')}</p>
           </div>
         </div>
       </div>
