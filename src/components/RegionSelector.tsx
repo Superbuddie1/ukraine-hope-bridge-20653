@@ -2,6 +2,7 @@ import { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MapPin, Search, Check } from 'lucide-react';
 import { Input } from '@/components/ui/input';
+import { useLanguage } from '@/hooks/useLanguage';
 import { cn } from '@/lib/utils';
 
 export const UKRAINIAN_REGIONS = [
@@ -43,31 +44,31 @@ interface RegionSelectorProps {
 export const RegionSelector = ({ value, onChange }: RegionSelectorProps) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [hoveredRegion, setHoveredRegion] = useState<string | null>(null);
+  const { t, language } = useLanguage();
+  const isUk = language === 'uk';
 
   const filteredRegions = useMemo(() => {
     if (!searchQuery.trim()) return UKRAINIAN_REGIONS;
     const query = searchQuery.toLowerCase();
     return UKRAINIAN_REGIONS.filter(
-      region => 
-        region.name.toLowerCase().includes(query) || 
+      region =>
+        region.name.toLowerCase().includes(query) ||
         region.nameUk.toLowerCase().includes(query)
     );
   }, [searchQuery]);
 
   return (
     <div className="space-y-4">
-      {/* Search Input */}
       <div className="relative">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
         <Input
-          placeholder="Search regions / Пошук регіонів..."
+          placeholder={t('regionSelector.searchPlaceholder')}
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           className="pl-10 bg-background/50 border-primary/20 focus:border-primary/50 transition-colors"
         />
       </div>
 
-      {/* Regions Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 max-h-[400px] overflow-y-auto pr-2 scrollbar-thin">
         <AnimatePresence mode="popLayout">
           {filteredRegions.map((region, index) => {
@@ -81,11 +82,7 @@ export const RegionSelector = ({ value, onChange }: RegionSelectorProps) => {
                 initial={{ opacity: 0, scale: 0.9, y: 20 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.9, y: -10 }}
-                transition={{ 
-                  duration: 0.2, 
-                  delay: index * 0.02,
-                  ease: "easeOut"
-                }}
+                transition={{ duration: 0.2, delay: index * 0.02, ease: "easeOut" }}
                 onClick={() => onChange(region.id)}
                 onMouseEnter={() => setHoveredRegion(region.id)}
                 onMouseLeave={() => setHoveredRegion(null)}
@@ -97,7 +94,6 @@ export const RegionSelector = ({ value, onChange }: RegionSelectorProps) => {
                     : "border-border/50 bg-card/50 hover:border-primary/50 hover:bg-primary/5"
                 )}
               >
-                {/* Animated background glow */}
                 {(isSelected || isHovered) && (
                   <motion.div
                     layoutId="region-glow"
@@ -108,7 +104,6 @@ export const RegionSelector = ({ value, onChange }: RegionSelectorProps) => {
                   />
                 )}
 
-                {/* Shimmer effect on hover */}
                 <motion.div
                   className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
                   style={{
@@ -119,41 +114,32 @@ export const RegionSelector = ({ value, onChange }: RegionSelectorProps) => {
                   transition={{ duration: 1.5, ease: "linear", repeat: Infinity }}
                 />
 
-                {/* Content */}
                 <div className="relative z-10 flex items-start gap-3">
                   <div className={cn(
                     "flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300",
-                    isSelected 
-                      ? "bg-primary text-primary-foreground" 
+                    isSelected
+                      ? "bg-primary text-primary-foreground"
                       : "bg-muted text-muted-foreground group-hover:bg-primary/20 group-hover:text-primary"
                   )}>
                     {isSelected ? (
-                      <motion.div
-                        initial={{ scale: 0 }}
-                        animate={{ scale: 1 }}
-                        transition={{ type: "spring", stiffness: 500, damping: 25 }}
-                      >
+                      <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: "spring", stiffness: 500, damping: 25 }}>
                         <Check className="h-4 w-4" />
                       </motion.div>
                     ) : (
                       <MapPin className="h-4 w-4" />
                     )}
                   </div>
-                  
+
                   <div className="flex-1 min-w-0">
-                    <p className={cn(
-                      "font-medium text-sm truncate transition-colors",
-                      isSelected ? "text-primary" : "text-foreground"
-                    )}>
-                      {region.name}
+                    <p className={cn("font-medium text-sm truncate transition-colors", isSelected ? "text-primary" : "text-foreground")}>
+                      {isUk ? region.nameUk : region.name}
                     </p>
                     <p className="text-xs text-muted-foreground truncate mt-0.5">
-                      {region.nameUk}
+                      {isUk ? region.name : region.nameUk}
                     </p>
                   </div>
                 </div>
 
-                {/* Selection ring animation */}
                 {isSelected && (
                   <motion.div
                     className="absolute inset-0 rounded-xl border-2 border-primary"
@@ -168,30 +154,19 @@ export const RegionSelector = ({ value, onChange }: RegionSelectorProps) => {
         </AnimatePresence>
       </div>
 
-      {/* No results message */}
       {filteredRegions.length === 0 && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="text-center py-8 text-muted-foreground"
-        >
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center py-8 text-muted-foreground">
           <MapPin className="h-8 w-8 mx-auto mb-2 opacity-50" />
-          <p>No regions found matching "{searchQuery}"</p>
+          <p>{t('regionSelector.noResults')} "{searchQuery}"</p>
         </motion.div>
       )}
 
-      {/* Selected region indicator */}
       <AnimatePresence>
         {value && (
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            className="flex items-center gap-2 p-3 rounded-lg bg-primary/10 border border-primary/30"
-          >
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="flex items-center gap-2 p-3 rounded-lg bg-primary/10 border border-primary/30">
             <MapPin className="h-4 w-4 text-primary" />
             <span className="text-sm text-primary font-medium">
-              Selected: {UKRAINIAN_REGIONS.find(r => r.id === value)?.name}
+              {t('regionSelector.selected')}: {isUk ? UKRAINIAN_REGIONS.find(r => r.id === value)?.nameUk : UKRAINIAN_REGIONS.find(r => r.id === value)?.name}
             </span>
           </motion.div>
         )}
@@ -200,7 +175,7 @@ export const RegionSelector = ({ value, onChange }: RegionSelectorProps) => {
   );
 };
 
-// Region proximity data for prioritizing resources
+// Region proximity data
 export const REGION_PROXIMITY: Record<RegionId, RegionId[]> = {
   'vinnytsia': ['khmelnytskyi', 'zhytomyr', 'kyiv-oblast', 'cherkasy', 'kirovohrad', 'mykolaiv', 'odesa'],
   'volyn': ['rivne', 'lviv', 'zhytomyr'],

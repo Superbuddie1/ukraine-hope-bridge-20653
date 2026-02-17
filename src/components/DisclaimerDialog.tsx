@@ -8,6 +8,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { AlertTriangle } from "lucide-react";
+import { useLanguage } from "@/hooks/useLanguage";
 
 interface DisclaimerDialogProps {
   open: boolean;
@@ -15,6 +16,8 @@ interface DisclaimerDialogProps {
 }
 
 const DisclaimerDialog = ({ open, onAccept }: DisclaimerDialogProps) => {
+  const { t } = useLanguage();
+
   return (
     <AlertDialog open={open}>
       <AlertDialogContent className="max-w-md">
@@ -23,15 +26,15 @@ const DisclaimerDialog = ({ open, onAccept }: DisclaimerDialogProps) => {
             <div className="p-2 bg-amber-100 dark:bg-amber-900/30 rounded-full">
               <AlertTriangle className="h-6 w-6 text-amber-600 dark:text-amber-400" />
             </div>
-            <AlertDialogTitle className="text-xl">Important Disclaimer</AlertDialogTitle>
+            <AlertDialogTitle className="text-xl">{t('disclaimer.title')}</AlertDialogTitle>
           </div>
           <AlertDialogDescription className="text-base leading-relaxed">
-            The information on this website should not be considered as medical advice and is for informational purposes only. You should always consult with a specialist before making decisions.
+            {t('disclaimer.body')}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogAction onClick={onAccept} className="w-full">
-            I Understand
+            {t('disclaimer.accept')}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
