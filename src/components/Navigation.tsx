@@ -32,13 +32,9 @@ const Navigation = () => {
           <Link to="/" className="flex items-center gap-2 group">
             <img
               src={logo}
-              alt="Ukraine Prosthetic Assistance Logo"
-              className="h-14 w-14 object-contain group-hover:scale-110 transition-transform"
+              alt="Protez Compass Logo"
+              className="h-14 w-auto object-contain group-hover:scale-110 transition-transform"
             />
-            <div className="hidden sm:flex flex-col leading-tight">
-              <span className="text-xl font-bold text-foreground">Protez</span>
-              <span className="text-xl font-bold text-primary">Compass</span>
-            </div>
           </Link>
 
           <div className="flex items-center gap-2">
