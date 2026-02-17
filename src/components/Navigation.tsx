@@ -33,7 +33,7 @@ const Navigation = () => {
             <img
               src={logo}
               alt="Protez Compass Logo"
-              className="h-10 w-auto object-contain group-hover:scale-110 transition-transform"
+              className="h-[60px] w-auto object-contain group-hover:scale-110 transition-transform"
             />
           </Link>
 
