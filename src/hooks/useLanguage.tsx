@@ -64,7 +64,7 @@ const translations: Record<Language, Record<string, unknown>> = {
       heroSubtitle: 'Receive a curated roadmap to assist you throughout your prosthetic journey.',
       getStarted: 'Get Started',
       learnMore: 'Learn More',
-      footer: '© 2025 Prosthemap. Supporting Ukraine\'s heroes.',
+      footer: '© 2025 Protez Compass. Supporting Ukraine\'s heroes.',
     },
     about: {
       title: 'About This Project',
@@ -250,7 +250,7 @@ const translations: Record<Language, Record<string, unknown>> = {
       heroSubtitle: 'Отримайте персоналізований план допомоги на шляху до протезування.',
       getStarted: 'Почати',
       learnMore: 'Дізнатися більше',
-      footer: '© 2025 Prosthemap. Підтримуємо героїв України.',
+      footer: '© 2025 Protez Compass. Підтримуємо героїв України.',
     },
     about: {
       title: 'Про цей проєкт',
